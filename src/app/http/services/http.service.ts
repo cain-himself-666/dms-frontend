@@ -12,4 +12,10 @@ export class HttpService {
   login(fd:any){
     return this.http.post<any>(`${URL}/api/auth/login/`, fd);
   }
+  registration(fd:any){
+    return this.http.post<any>(`${URL}/api/user/reg`, fd);
+  }
+  logout(){
+    return this.http.post(`${URL}/api/auth/logout/`,{});
+  }
 }

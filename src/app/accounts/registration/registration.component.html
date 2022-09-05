@@ -6,50 +6,53 @@
             <h2>Registration Form</h2>
         </div>
         <div class="px-5">
-            <form>
+            <form #reg="ngForm" (ngSubmit)="onRegistration(reg.value, user.value)">
                 <div class="row">
                     <div class="col-md-3">
-                        <label class="form-label">First Name</label>
-                        <input class="form-control" type="text">
+                        <label class="form-label">First Name<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="fname" ngModel #fname="ngModel" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Last Name</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" name="lname" ngModel #lname="ngModel" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Email</label>
-                        <input class="form-control" type="email">
+                        <input class="form-control" type="email" name="email" ngModel #email="ngModel" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Contact Number</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" name="contact" ngModel #contact="ngModel" required>
                     </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-md-3">
-                        <label class="form-label">Username</label>
-                        <input class="form-control" type="text">
+                        <label class="form-label">Username<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="username" ngModel #username="ngModel" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Password</label>
-                        <input class="form-control" type="text">
+                        <label class="form-label">Password<span class="text-danger">*</span></label>
+                        <input class="form-control" type="password" name="pass" ngModel #pass="ngModel" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Confirm Password</label>
-                        <input class="form-control" type="text">
+                        <label class="form-label">Confirm Password<span class="text-danger">*</span></label>
+                        <input class="form-control" type="password" name="confPass" ngModel #confPass="ngModel" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Type of User</label>
-                        <select class="form-select">
+                        <label class="form-label">Type of User<span class="text-danger">*</span></label>
+                        <select class="form-select" #user>
                             <option>---Select the type of user---</option>
-                            <option>General User</option>
-                            <option>Dataentry Operator</option>
-                            <option>Approver</option>
+                            <option value="4">General User</option>
+                            <option value="2">Dataentry Operator</option>
+                            <option value="3">Approver</option>
                         </select>
                     </div>
                 </div>
+                <div class="mt-4">
+                    <small class="text-danger">Note: Fields marked with (*) are mandatory.</small>
+                </div>
                 <div class="text-center">
-                    <button class="btn btn-primary mt-4 text-center" type="submit">Register</button>
+                    <button class="btn btn-primary mt-3 text-center px-4" type="submit" style="font-size: 18px;">Register</button>
                 </div>
             </form>
         </div>

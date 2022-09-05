@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from 'src/app/http/http_service/http.service';
+import { HttpService } from 'src/app/http/services/http.service';
+import { Router } from '@angular/router';
+import { LocalstorageService } from 'src/app/http/services/localstorage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,7 +9,7 @@ import { HttpService } from 'src/app/http/http_service/http.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService, private local_storage: LocalstorageService, private route: Router) { }
 
   ngOnInit(): void {
   }
@@ -17,7 +19,8 @@ export class LoginComponent implements OnInit {
     fd.append('password', data.password);
     fd.append('client', 'api');
     this.http.login(fd).subscribe(data => {
-      console.log(data);
+      this.local_storage.saveToken(data.token);
+      this.route.navigate(['/dashboard']);
     }, err => {
       console.log(err);
     })

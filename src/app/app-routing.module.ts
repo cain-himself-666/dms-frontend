@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './accounts/login/login.component';
 import { RegistrationComponent } from './accounts/registration/registration.component';
-import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { DashboardComponent } from './public/dashboard/dashboard.component';
+import { EntryComponent } from './repository/entry/entry.component';
 import { PagenotfoundComponent } from './shared/pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
@@ -10,6 +11,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "dashboard", component: DashboardComponent },
   { path: "registration", component: RegistrationComponent},
+  { path: "case-entry", component: EntryComponent},
   { path: "**", component: PagenotfoundComponent}
 ];
 
