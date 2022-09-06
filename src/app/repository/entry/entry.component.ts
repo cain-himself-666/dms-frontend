@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 import { DatePipe } from '@angular/common';
-
 declare var bindStepper: any;
 @Component({
   selector: 'app-entry',
@@ -9,6 +8,7 @@ declare var bindStepper: any;
   styleUrls: ['./entry.component.css']
 })
 export class EntryComponent implements OnInit {
+  
   petitioner_counsels:any = [];
   respondent_counsels:any = [];
   judges:any = [];
@@ -73,5 +73,18 @@ export class EntryComponent implements OnInit {
   }
   onDeleteJudge(judge_name: string){
     this.judges.splice(this.judges.findIndex((item: string) => item === judge_name),1);
+  }
+  onAddStep2(data: any){
+    if(this.judges.length === 0){
+      alert('Please add atleast one judge to proceed.');
+    }
+    else{
+      let fd = new FormData();
+      fd.append('disposal_bench_code', data.bench_code);
+      fd.append('additional_petitioner', data.addn_pet_name);
+      fd.append('additional_respondent', data.addn_res_name);
+      fd.append('judge_name', this.judges.toString().replace(',','|'));
+      console.log(fd.get('disposal_bench_code'), fd.get('additional_petitioner'), fd.get('additional_respondent'), fd.get('judge_name'));
+    }
   }
 }
