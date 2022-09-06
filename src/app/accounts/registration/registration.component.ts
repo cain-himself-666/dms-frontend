@@ -18,9 +18,9 @@ export class RegistrationComponent implements OnInit {
     fd.append('password', data.pass);
     fd.append('password2', data.confPass);
     fd.append('first_name', data.fname);
-    fd.append('last_name', data.lname);
-    fd.append('email', data.email);
-    fd.append('contact_number', data.contact);
+    fd.append('last_name', data.lname || null);
+    fd.append('email', data.email || null);
+    fd.append('contact_number', data.contact || null);
     fd.append('group', user);
     this.http.registration(fd).subscribe(data => {
       console.log(data);

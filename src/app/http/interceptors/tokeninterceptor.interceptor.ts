@@ -17,11 +17,10 @@ export class TokeninterceptorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let authReq = request;
     const token = this.local_storage.getToken();
-    console.log(authReq, token);
     if (token != null) {
       authReq = request.clone({ headers: request.headers.set(TOKEN_HEADER_KEY, 'Token ' + token) });
     }
-    return next.handle(request);
+    return next.handle(authReq);
   }
 }
 export const tokenInterceptor = [

@@ -18,4 +18,7 @@ export class HttpService {
   logout(){
     return this.http.post(`${URL}/api/auth/logout/`,{});
   }
+  case_entry(fd:any){
+    return this.http.post(`${URL}/api/old_case_master`, fd);
+  }
 }
