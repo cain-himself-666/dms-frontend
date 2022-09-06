@@ -11,8 +11,10 @@ declare var bindStepper: any;
 export class EntryComponent implements OnInit {
   petitioner_counsels:any = [];
   respondent_counsels:any = [];
+  judges:any = [];
   pcounsel_name: string = '';
   rcounsel_name: string = '';
+  judge_name:string = '';
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     bindStepper();
@@ -23,12 +25,12 @@ export class EntryComponent implements OnInit {
     jfield.innerHTML = "<label class='form-label'>Judge Name</label><input type='text' class='form-control'>";
     document.getElementById('judge')?.appendChild(jfield);
   }
-  onAddPetitionerCounsel(counsel_name:string){
-    this.petitioner_counsels.push(counsel_name);
+  onAddPetitionerCounsel(){
+    this.petitioner_counsels.push(this.pcounsel_name);
     this.pcounsel_name = '';
   }
-  onAddRespondentCounsel(counsel_name:string){
-    this.respondent_counsels.push(counsel_name);
+  onAddRespondentCounsel(){
+    this.respondent_counsels.push(this.rcounsel_name);
     this.rcounsel_name = '';
   }
   onDeletePetCounsel(counsel_name: string){
@@ -64,5 +66,12 @@ export class EntryComponent implements OnInit {
         console.log(data);
       })
     }
+  }
+  onAddJudges(){
+    this.judges.push(this.judge_name);
+    this.judge_name = '';
+  }
+  onDeleteJudge(judge_name: string){
+    this.judges.splice(this.judges.findIndex((item: string) => item === judge_name),1);
   }
 }
