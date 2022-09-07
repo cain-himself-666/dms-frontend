@@ -43,8 +43,8 @@ function bindStepper()
             }
         }
 
-        if (isValid)
-            nextStepWizard.removeAttr('disabled').trigger('click');
+        // if (isValid)
+        nextStepWizard.removeAttr('disabled').trigger('click');
     });
 
     allPrevBtn.click(function(){

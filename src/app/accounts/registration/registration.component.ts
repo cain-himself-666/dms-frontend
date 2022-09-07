@@ -7,23 +7,32 @@ import { LocalstorageService } from 'src/app/http/services/localstorage.service'
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
-
+  emp_name: string = '';
+  emp_contact: string = '';
+  emp_email: string = '';
+  emp_address1: string = '';
+  emp_address2: string = '';
+  emp_username: string = '';
+  emp_password: string = '';
+  emp_id: string = '';
+  emp_photo: any;
   constructor(private http: HttpService, private local_storage: LocalstorageService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+  onPhotoUpload(event: any){
+    if(event.target.files[0]){
+      this.emp_photo = event.target.files[0];
+    }
   }
-  onRegistration(data:any, user:string){
-    let fd = new FormData();
-    fd.append('username', data.username);
-    fd.append('password', data.pass);
-    fd.append('password2', data.confPass);
-    fd.append('first_name', data.fname);
-    fd.append('last_name', data.lname || null);
-    fd.append('email', data.email || null);
-    fd.append('contact_number', data.contact || null);
-    fd.append('group', user);
-    this.http.registration(fd).subscribe(data => {
-      console.log(data);
-    })
+  onCheckAddress(event: any){
+    if(event.target.checked){
+      this.emp_address2 = this.emp_address1;
+    }
+    else{
+      this.emp_address2 = '';
+    }
+  }
+  onRegistration(data:any, gender: string, bgroup:string, empType: string){
+    console.log(data, gender, bgroup, empType, this.emp_photo);
   }
 }

@@ -1,5 +1,6 @@
 import { Renderer2,Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { LocalstorageService } from 'src/app/http/services/localstorage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,8 +9,8 @@ import { DOCUMENT } from '@angular/common';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private _renderer2: Renderer2, @Inject(DOCUMENT) private _document: Document) { }
-
+  constructor(private _renderer2: Renderer2, @Inject(DOCUMENT) private _document: Document, private local_storage: LocalstorageService) { }
+  // group: any = this.local_storage.getUserGroup();
   ngOnInit(): void {
     let script = this._renderer2.createElement('script');
     script.type = 'text/javascript';

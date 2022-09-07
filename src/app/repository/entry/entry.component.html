@@ -14,10 +14,6 @@
                     </div>
                     <div class="stepwizard-step">
                         <a href="#step2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                        <p>Additional Details</p>
-                    </div>
-                    <div class="stepwizard-step">
-                        <a href="#step3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
                         <p>Upload Documents</p>
                     </div>
                 </div>
@@ -27,37 +23,37 @@
                     <form #entry1="ngForm" (ngSubmit)="onAddStep1(entry1.value)">
                         <div class="row">
                             <div class="col-md-4">
-                                <label class="form-label">Case No</label>
-                                <input type="text" class="form-control" name="case_no" ngModel #case_no="ngModel" required>
+                                <label class="form-label">Case No<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="case_no" id="case_no" ngModel #case_no="ngModel" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Filing Date</label>
-                                <input type="date" class="form-control" name="filing_date" ngModel #disposal_date="ngModel" required>
+                                <label class="form-label">Registration Date<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="filing_date" id="filing_date" ngModel #disposal_date="ngModel" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Judgement Date</label>
-                                <input type="date" class="form-control" name="disposal_date" ngModel #disposal_date="ngModel" required>
+                                <label class="form-label">Judgement Date<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="disposal_date" id="disposal_date" ngModel #disposal_date="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
-                                <label class="form-label">First Petitioner Name</label>
-                                <input type="text" class="form-control" name="first_petitioner" ngModel #first_petitioner="ngModel" required>
+                                <label class="form-label">First Petitioner Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="first_petitioner" id="first_petitioner" ngModel #first_petitioner="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
-                                <label class="form-label">First Respondent Name</label>
-                                <input type="text" class="form-control" name="first_respondent" ngModel #first_respondent="ngModel" required>
+                                <label class="form-label">First Respondent Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="first_respondent" id="first_respondent" ngModel #first_respondent="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
-                                <label class="form-label">District</label>
-                                <input type="text" class="form-control" name="district" ngModel #district="ngModel" required>
+                                <label class="form-label">District<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="district" id="district" ngModel #district="ngModel" required>
                             </div>
                         </div>
                         <div class="row mt-5">
                             <div class="col-md-6">
                                 <div class="petitioner mb-3">
-                                    <h4>Petitioner Counsel(s)</h4>
+                                    <h4>Petitioner Counsel(s)<span class="text-danger">*</span></h4>
                                 </div>
                                 <ul class="list-group" *ngFor="let p of petitioner_counsels; let i=index;">
-                                    <li class="list-group-item d-flex justify-content-between col-md-10">Petitioner Counsel {{i+1}}: {{p}}<span style="cursor: pointer" class="text-danger" (click)="onDeletePetCounsel(p)">x</span></li>
+                                    <li class="list-group-item d-flex justify-content-between col-md-10">Petitioner Counsel {{i+1}}: {{p}}<span class="text-danger" (click)="onDeletePetCounsel(p)" style="cursor: pointer;">x</span></li>
                                 </ul>
                                 <div class="row mt-4" id="pfield">
                                     <div>
@@ -73,7 +69,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="respondent mb-3">
-                                    <h4>Respondent Counsel(s)</h4>
+                                    <h4>Respondent Counsel(s)<span class="text-danger">*</span></h4>
                                 </div>
                                 <ul class="list-group" *ngFor="let r of respondent_counsels; let i=index;">
                                     <li class="list-group-item d-flex justify-content-between col-md-10">Respondent Counsel {{i+1}}: {{r}}<span style="cursor: pointer" class="text-danger" (click)="onDeleteResCounsel(r)">x</span></li>
@@ -91,18 +87,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-end mt-5 mb-5">
-                            <button class="btn btn-primary click text-end nextBtn">Next<i class="bi bi-arrow-right-circle ms-2"></i></button>
-                        </div>
-                    </form>
-                </div>
-                <div class="row setup-content" id="step2">
-                    <form #step2="ngForm" (ngSubmit)="onAddStep2(step2.value)">
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Bench Code</label>
-                                <input class="form-control" type="text" name="bench_code" ngModel #bench_code="ngModel">
-                            </div>
+                        <div class="row mt-4">
                             <div class="col-md-4">
                                 <label class="form-label">Additional Petitioner Name</label>
                                 <input class="form-control" type="text" name="addn_pet_name" ngModel #addn_pet_name="ngModel">
@@ -111,9 +96,13 @@
                                 <label class="form-label">Additional Respondent Name</label>
                                 <input class="form-control" type="text" name="addn_res_name" ngModel #addn_res_name="ngModel">
                             </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Bench Code<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="bench_code" id="bench_code" ngModel #bench_code="ngModel">
+                            </div>
                         </div>
                         <div class="judge mt-4">
-                            <h4>Judge(s)</h4>
+                            <h4>Judge(s)<span class="text-danger">*</span></h4>
                             <ul class="list-group mt-4" *ngFor="let j of judges; let i=index;">
                                 <li class="list-group-item d-flex justify-content-between col-md-10">Judge {{i+1}}: {{j}}<span style="cursor: pointer" class="text-danger" (click)="onDeleteJudge(j)">x</span></li>
                             </ul>
@@ -130,14 +119,48 @@
                             </div>
                         </div>
                         <div class="text-end mt-5 mb-5">
-                            <button class="btn btn-primary click text-end prevBtn mx-3" type="button"><i class="bi bi-arrow-left-circle mx-2"></i>Go Back</button>
                             <button class="btn btn-primary click text-end nextBtn">Next<i class="bi bi-arrow-right-circle ms-2"></i></button>
                         </div>
                     </form>
                 </div>
-                <!-- <div class="row setup-content" id="step3">
-                    <div class=""
-                </div> -->
+                <div class="row setup-content" id="step2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Document Type</label>
+                            <select class="form-select" #docType>
+                                <option value="0">--- Select Document Type ---</option>
+                                <option *ngFor="let d of doc_type" value="{{d.id}}">{{d.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Upload File</label>
+                            <input type="file" class="form-control" (change)="onFileUpload($event)">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary click" style="margin-top: 31px;" type="button" (click)="onAddStep2(docType.value)">Upload</button>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <table class="table table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th class="col text-center">S.No.</th>
+                                    <th class="col">Document Type</th>
+                                    <th class="col">Document</th>
+                                    <th class="col text-center">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let d of documents; let i=index">
+                                    <td class="text-center" width="7%">{{i+1}}</td>
+                                    <td>{{d.related_type.name}}</td>
+                                    <td><a href="{{d.document_url}}" target="_blank">Test.pdf</a></td>
+                                    <td class="text-center" width="5%"><i class="bi bi-x-circle" style="color: red; font-size: 21px; cursor:pointer"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

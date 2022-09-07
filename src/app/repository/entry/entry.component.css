@@ -60,3 +60,12 @@
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }
+#case_no.ng-invalid.ng-touched,
+#filing_date.ng-invalid.ng-touched,
+#disposal_date.ng-invalid.ng-touched,
+#first_petitioner.ng-invalid.ng-touched,
+#first_respondent.ng-invalid.ng-touched,
+#district.ng-invalid.ng-touched,
+#bench_code.ng-invalid.ng-touched{
+    border-color:red
+}

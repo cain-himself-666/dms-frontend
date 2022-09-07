@@ -19,6 +19,15 @@ export class HttpService {
     return this.http.post(`${URL}/api/auth/logout/`,{});
   }
   case_entry(fd:any){
-    return this.http.post(`${URL}/api/old_case_master`, fd);
+    return this.http.post<any>(`${URL}/api/old_case_master`, fd);
+  }
+  document_type(){
+    return this.http.get<any>(`${URL}/api/document_type`);
+  }
+  add_document(fd:any){
+    return this.http.post(`${URL}/api/old_case_document`, fd);
+  }
+  get_documents(case_id: any){
+    return this.http.get<any>(`${URL}/api/old_case_document`, { params: { case_id: case_id}});
   }
 }

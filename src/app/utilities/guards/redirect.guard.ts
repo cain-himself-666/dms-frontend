@@ -6,15 +6,16 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class RedirectGuard implements CanActivate {
   constructor(private local_storage: LocalstorageService, private route: Router){}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(!this.local_storage.getToken()){
+    if(this.local_storage.getToken()){
       return true;
     }
-    this.route.navigate(['/dashboard']);
+    alert('Please login to access dashboard.');
+    this.route.navigate(['/']);
     return false;
   }
   

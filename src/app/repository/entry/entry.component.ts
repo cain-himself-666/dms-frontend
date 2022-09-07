@@ -11,13 +11,23 @@ export class EntryComponent implements OnInit {
   
   petitioner_counsels:any = [];
   respondent_counsels:any = [];
+  documents: any = [];
   judges:any = [];
+  doc_type:any = [];
   pcounsel_name: string = '';
   rcounsel_name: string = '';
   judge_name:string = '';
+  app_id: number = 0;
+  doc: any;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     bindStepper();
+    this.http.document_type().subscribe(data => {
+      this.doc_type = data.results
+    })
+    this.http.get_documents(this.app_id).subscribe(data => {
+      this.documents = data.results;
+    })
   }
   onAddJudge(){
     let jfield = document.createElement('div');
@@ -39,6 +49,16 @@ export class EntryComponent implements OnInit {
   onDeleteResCounsel(counsel_name: string){
     this.respondent_counsels.splice(this.respondent_counsels.findIndex((item: string) => item === counsel_name),1);
   }
+  onAddJudges(){
+    this.judges.push(this.judge_name);
+    this.judge_name = '';
+  }
+  onDeleteJudge(judge_name: string){
+    this.judges.splice(this.judges.findIndex((item: string) => item === judge_name),1);
+  }
+  onFileUpload(event:any){
+    this.doc = event.target.files[0];
+  }
   onAddStep1(data:any){
     if(this.petitioner_counsels.length === 0 || this.respondent_counsels.length === 0){
       if (this.petitioner_counsels.length === 0){
@@ -47,6 +67,9 @@ export class EntryComponent implements OnInit {
       if (this.respondent_counsels.length === 0){
         alert('Please add atleast one respondent counsel');
       }
+    }
+    else if(this.judges.length === 0){
+      alert('Please add atleast one judge');
     }
     else{
       var petitioner_counsel = this.petitioner_counsels.toString().replace(',','|');
@@ -62,29 +85,25 @@ export class EntryComponent implements OnInit {
       fd.append('case_year', init_year);
       fd.append('petitioner_counsel', petitioner_counsel);
       fd.append('respondent_counsel', respondent_counsel);
-      this.http.case_entry(fd).subscribe(data => {
-        console.log(data);
-      })
-    }
-  }
-  onAddJudges(){
-    this.judges.push(this.judge_name);
-    this.judge_name = '';
-  }
-  onDeleteJudge(judge_name: string){
-    this.judges.splice(this.judges.findIndex((item: string) => item === judge_name),1);
-  }
-  onAddStep2(data: any){
-    if(this.judges.length === 0){
-      alert('Please add atleast one judge to proceed.');
-    }
-    else{
-      let fd = new FormData();
       fd.append('disposal_bench_code', data.bench_code);
       fd.append('additional_petitioner', data.addn_pet_name);
       fd.append('additional_respondent', data.addn_res_name);
       fd.append('judge_name', this.judges.toString().replace(',','|'));
-      console.log(fd.get('disposal_bench_code'), fd.get('additional_petitioner'), fd.get('additional_respondent'), fd.get('judge_name'));
+      this.http.case_entry(fd).subscribe(data => {
+        this.app_id = data.id
+      })
     }
+  }
+  onAddStep2(doc_type:string){
+    let fd = new FormData();
+    fd.append('case_id', this.app_id.toString());
+    fd.append('type_id', doc_type);
+    fd.append('document_url', this.doc);
+    this.http.add_document(fd).subscribe(data => {
+      this.http.get_documents(this.app_id).subscribe(data => {
+        this.documents = data.results;
+        console.log(this.documents);
+      });
+    })
   }
 }

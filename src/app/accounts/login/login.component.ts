@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
     fd.append('client', 'api');
     this.http.login(fd).subscribe(data => {
       this.local_storage.saveToken(data.token);
+      this.local_storage.saveUser(JSON.stringify(data.user));
       this.route.navigate(['/dashboard']);
     }, err => {
       console.log(err);
