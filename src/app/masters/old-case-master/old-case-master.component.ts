@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 import { DatePipe } from '@angular/common';
+import { Subject } from 'rxjs';
 declare var bindStepper: any;
+
 @Component({
-  selector: 'app-entry',
-  templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css']
+  selector: 'app-old-case-master',
+  templateUrl: './old-case-master.component.html',
+  styleUrls: ['./old-case-master.component.css']
 })
-export class EntryComponent implements OnInit {
-  
+export class OldCaseMasterComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
   petitioner_counsels:any = [];
   respondent_counsels:any = [];
   documents: any = [];
@@ -21,6 +24,11 @@ export class EntryComponent implements OnInit {
   doc: any;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      processing: true,
+    }
     bindStepper();
     this.http.document_type().subscribe(data => {
       this.doc_type = data.results
@@ -106,4 +114,5 @@ export class EntryComponent implements OnInit {
       });
     })
   }
+
 }

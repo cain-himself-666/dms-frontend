@@ -1,0 +1,49 @@
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="d-block w-100">
+        <app-header></app-header>
+        <div class="complex px-5">
+            <div class="title mt-4 text-center">
+                <h2>Designation Allocation</h2>
+            </div>
+            <div class="input-group mt-5 mb-4">
+                <ng-autocomplete placeholder="Enter Name ....">
+                                               
+                </ng-autocomplete>
+                <!-- <ng-template #itemTemplate let-item>
+                    <a (click)="onSearchUser(item.employee_username)" innerHTML="{{item.employee_name}}"></a>
+                </ng-template>
+                    
+                <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                </ng-template> -->
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <label class="form-label">Employee Name</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Employee ID</label>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <label class="form-label">Employee Type</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Designation</label>
+                    <select class="form-select">
+                        <option>----Select Designation----</option>
+                        <option>Designation A</option>
+                        <option>Designation A</option>
+                        <option>Designation A</option>
+                        <option>Designation A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

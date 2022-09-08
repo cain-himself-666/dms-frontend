@@ -10,12 +10,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" name="name" [(ngModel)]="emp_name" #name="ngModel" required/>
+                        <input type="text" name="name" class="form-control" name="name" ngModel #name="ngModel" required/>
                         <small class="text-danger" *ngIf="name.invalid && name.touched">Name Required</small>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Contact Number</label>
-                        <input type="text" name="contact" maxLength="10" pattern="\d{10}" class="form-control" name="contact" [(ngModel)]="emp_contact" #contact="ngModel" required/>
+                        <input type="text" name="contact" maxLength="10" pattern="\d{10}" class="form-control" name="contact" ngModel #contact="ngModel" required/>
                         <div *ngIf="contact.touched">
                             <small class="text-danger" *ngIf="contact.errors?.required">Contact Number Required (Max Length: 10 digits)</small>
                             <small class="text-danger" *ngIf="contact.errors?.pattern">Invalid Contact Number</small>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Email ID</label>
-                        <input type="email" name="email" class="form-control" name="email" [(ngModel)]="emp_email" #email="ngModel" required/>
+                        <input type="email" name="email" class="form-control" name="email" ngModel #email="ngModel" required/>
                     </div>
                     <div class="col-md-4">
                           <label class="form-label" for="form3Example1w">Blood Group</label>
@@ -72,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label">Employee ID/Number</label>
-                        <input type="text" class="form-control" name="employee_id" [(ngModel)]="emp_id" #employee_id="ngModel" required/>
+                        <input type="text" class="form-control" name="employee_id" ngModel #employee_id="ngModel" required/>
                         <small class="text-danger" *ngIf="employee_id.invalid && employee_id.touched">Employee ID is required</small>
                     </div>
                     <div class="col-md-4">
@@ -90,15 +90,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-4 pb-2 pb-md-0 mb-md-10">
+                <div class="row mb-4">
                     <div class="col-md-4">
                         <label class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" [(ngModel)]="emp_username" #username="ngModel" required/>
+                        <input type="text" name="username" class="form-control" ngModel #username="ngModel" required/>
                         <small class="text-danger" *ngIf="username.invalid && username.touched">Username is Required</small>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" [(ngModel)]="emp_password" #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}"/>
+                        <input type="password" name="password" class="form-control" ngModel #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}"/>
                         <div *ngIf="password.touched">
                             <small class="text-danger" *ngIf="password.errors?.required">Password Required</small>
                             <small class="text-danger" *ngIf="password.errors?.pattern">Password is Required (Minimum Length: 8 characters with atleast one capital alphabet letter (A-Z), one small alphabet letter (a-z), one number (0-9) and one sepcial character (.,?/!@#$%^&*))</small>
@@ -106,8 +106,8 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Confirm Password</label>
-                        <input type="password" name="conf_password" class="form-control" #conf_password/>
-                        <small class="text-danger" *ngIf="password.value !== conf_password.value">Password is did not match</small>
+                        <input type="password" name="conf_password" class="form-control" ngModel #conf_password="ngModel"/>
+                        <small class="text-danger" *ngIf="conf_password.value !== password.value">Password is did not match</small>
                     </div>
                 </div>
                 <div class="mt-4 mb-5">
