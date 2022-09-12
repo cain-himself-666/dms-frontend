@@ -9,8 +9,8 @@ export class DashboardComponent implements OnInit {
   constructor(private local_storage: LocalstorageService) { }
 
   ngOnInit(): void {
-    this.local_storage.getUserGroup();
-    this.local_storage.getUserName();
+    // this.local_storage.getUserGroup();
+    // this.local_storage.getUserName();
   }
 
 }

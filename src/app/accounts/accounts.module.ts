@@ -6,12 +6,14 @@ import { RegistrationComponent } from './registration/registration.component';
 import { SharedModule } from '../shared/shared.module';
 import { DesignationAllocationComponent } from './designation-allocation/designation-allocation.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { DutyAllocationComponent } from './duty-allocation/duty-allocation.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
-    DesignationAllocationComponent
+    DesignationAllocationComponent,
+    DutyAllocationComponent
   ],
   imports: [
     CommonModule,

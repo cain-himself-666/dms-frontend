@@ -66,4 +66,20 @@ export class ComplexMasterComponent implements OnInit {
   onShowEntry(){
     this.showUpdate = !this.showUpdate;
   }
+  isDelete(id:string, is_delete:boolean){
+    let i:any;
+    if(is_delete){
+      i = false;
+    }
+    else{
+      i = true;
+    }
+    console.log(i);
+    let fd = new FormData();
+    fd.append('id', id);
+    fd.append('complex_isDeleted', i);
+    this.http.update_complex_isDelete(fd).subscribe(data => {
+      console.log(data);
+    })
+  }
 }

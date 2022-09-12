@@ -1,3 +1,16 @@
+.button{
+    color: #579FDD;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn{
+    background-color: #579FDD;
+    border-color: #579FDD;
+}
+.btn:hover{
+    background-color: #7CB8EC;
+    border-color: #7CB8EC;
+}
 .stepwizard-step p {
     margin-top: 10px;
 }

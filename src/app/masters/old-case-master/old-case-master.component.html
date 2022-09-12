@@ -5,14 +5,14 @@
         <div class="text-center mb-5 mt-4">
             <h2>Old Case Master</h2>
         </div>
-        <!-- <div class="grid-view">
+        <div class="grid-view" *ngIf="!showForm">
             <div class="text-end mt-3 px-5">
-                <button class="btn btn-primary" type="button">+ Add Employee</button>
+                <button class="btn btn-primary" type="button" (click)="onShowEntryForm()">+ Add Old Case</button>
             </div>
-            <div class="mt-3 text-center">
-                <h3>No employees added</h3>
+            <div class="mt-3 text-center" *ngIf="!showData">
+                <h3>No old cases added</h3>
             </div>
-            <div class="px-5 mt-4">
+            <div class="px-5 mt-4" *ngIf="showData">
                 <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions">
                     <thead>
                         <tr class="text-center">
@@ -24,18 +24,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
+                        <tr *ngFor="let o of old_cases; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{o.case_no}}</td>
+                            <td>{{o.first_petitioner}} v/s {{o.first_respondent}}</td>
+                            <td width="10%" class="text-center"><a class="button" (click)="onShowForm(o.id)">Edit</a></td>
+                            <td width="10%" class="text-center"><input type="checkbox"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div> -->
-        <div class="entry px-5">
+        </div>
+        <div class="entry px-5" [hidden]="!showForm">
             <div class="stepwizard">
                 <div class="stepwizard-row setup-panel">
                     <div class="stepwizard-step">
@@ -58,11 +58,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Registration Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="filing_date" id="filing_date" ngModel #disposal_date="ngModel" required>
+                                <input type="date" class="form-control" name="reg_date" id="filing_date" ngModel #reg_date="ngModel" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Judgement Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="disposal_date" id="disposal_date" ngModel #disposal_date="ngModel" required>
+                                <input type="date" class="form-control" name="disp_date" id="disposal_date" ngModel #disp_date="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
                                 <label class="form-label">First Petitioner Name<span class="text-danger">*</span></label>

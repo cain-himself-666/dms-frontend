@@ -1,24 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 @Component({
-  selector: 'app-designation-allocation',
-  templateUrl: './designation-allocation.component.html',
-  styleUrls: ['./designation-allocation.component.css']
+  selector: 'app-duty-allocation',
+  templateUrl: './duty-allocation.component.html',
+  styleUrls: ['./duty-allocation.component.css']
 })
-export class DesignationAllocationComponent implements OnInit {
+export class DutyAllocationComponent implements OnInit {
   emp_type: string = '';
   emp_name: string = '';
   emp_id: string = '';
+  id: string = '';
   keyword: string = 'name';
   searchData:any;
   buffer: any = [];
-  designations: any = [];
-  id:string = '';
+  complex: any = [];
+  department: any = [];
+  showDept: boolean = false;
+  complex_id: string = '';
+  department_id:string = '';
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
-    this.http.get_designations().subscribe(data => {
-      this.designations = data.results;
+    this.http.get_complex().subscribe(data => {
+      this.complex = data.results;
     })
     this.http.get_users().subscribe(data => {
       data.results.forEach((element:any) => {
@@ -45,11 +49,30 @@ export class DesignationAllocationComponent implements OnInit {
       this.emp_name = data.related_profile[0].employee_name;
     })
   }
-  onAllocateDesignation(desg:string){
+  onGetDepartments(event:any){
+    this.complex_id = event.target.value;
+    this.department_id = '';
+    this.http.get_corresponding_department(event.target.value).subscribe(data => {
+      if(data.count === 0){
+        this.showDept = false;
+      }
+      else{
+        this.showDept = true;
+        this.department = data.results;
+      }
+    })
+  }
+  onGetDepartment(event:any){
+    this.department_id = event.target.value;
+  }
+  onAllocateDuty(){
     let fd = new FormData();
+    if(this.department_id){
+      fd.append('department_id', this.complex_id);
+    }
+    fd.append('complex_id', this.complex_id);
     fd.append('employee_id', this.id);
-    fd.append('designation_id', desg);
-    this.http.allocate_designation(fd).subscribe(data => {
+    this.http.allocate_duty(fd).subscribe(data => {
       console.log(data);
     })
   }

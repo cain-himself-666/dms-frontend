@@ -79,17 +79,20 @@
 .sidebar.closed .nav_list i.arrow{
     display: none;
 }
+.sidebar .nav_list li label,
 .sidebar .nav_list li a{
     display:flex;
     text-decoration: none;
     align-items: center;
 }
+.sidebar .nav_list li label .links_name,
 .sidebar .nav_list li a .links_name{
     font-size: 18px;
     font-weight: 400;
     color:#fff;
 }
-.sidebar.closed .nav_list li a .links_name{
+.sidebar.closed .nav_list label .links_name,
+.sidebar.closed .nav_list a .links_name{
     opacity: 0;
     pointer-events: none;
 }
@@ -126,14 +129,15 @@
     opacity: 1;
     display: block;
 }
+.sidebar .nav_list li .sub-menu label,
 .sidebar .nav_list li .sub-menu a{
     color: #fff;
     font-size: 15px;
     padding: 5px 0;
     white-space: nowrap;
     opacity: 0.6;
-    transition: all 0.3s ease;
 }
+.sidebar .nav_list li .sub-menu label:hover,
 .sidebar .nav_list li .sub-menu a:hover{
     opacity: 1;
 }

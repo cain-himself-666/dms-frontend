@@ -29,8 +29,9 @@
                                 <td class="text-center">{{i+1}}</td>
                                 <td>{{c.complex_name}}</td>
                                 <td>{{c.complex_description}}</td>
-                                <td class="text-center"><a (click)="onShowUpdate(c.id)" style="cursor: pointer; color: #579FDD;">Edit</a></td>
-                                <td class="text-center"><input type="checkbox"></td>
+                                <td class="text-center"><a (click)="onShowUpdate(c.id)" class="button">Edit</a></td>
+                                <td class="text-center"><input type="checkbox" checked *ngIf="c.complex_isDeleted" (click)="isDelete(c.id, c.complex_isDeleted)">
+                                                        <input type="checkbox" *ngIf="!c.complex_isDeleted" (click)="isDelete(c.id, c.complex_isDeleted)"></td>
                             </tr>
                         </tbody>
                     </table>

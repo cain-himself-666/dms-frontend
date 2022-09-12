@@ -22,19 +22,20 @@
                                 <th class="col">ID</th>
                                 <th class="col">Type</th>
                                 <th class="col">Gender</th>
-                                <th class="col">Operations</th>
-                                <th class="col">isDeleted</th>
+                                <th class="col" width="10%">Operations</th>
+                                <th class="col" width="10%">isDeleted</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let u of users; let i=index">
-                                <td>{{u.employee_username}}</td>
-                                <td>{{u.employee_name}}</td>
-                                <td>{{u.employee_id}}</td>
-                                <td>{{u.employee_type}}</td>
-                                <td>{{u.employee_gender}}</td>
-                                <td><a style="cursor:pointer; color: blue"></a>Edit</td>
-                                <td><input type="checkbox"></td>
+                                <td>{{u.username}}</td>
+                                <td>{{u.related_profile[0].employee_name}}</td>
+                                <td>{{u.related_profile[0].employee_id}}</td>
+                                <td>{{u.related_profile[0].employee_type}}</td>
+                                <td>{{u.related_profile[0].employee_gender}}</td>
+                                <td class="text-center"><a class="button" (click)="onShowForm(u.id)">Edit</a></td>
+                                <td class="text-center"><input type="checkbox" (click)="isDelete(u.related_profile[0].id,u.related_profile[0].employee_isDeleted)" checked *ngIf="u.related_profile[0].employee_isDeleted">
+                                                        <input type="checkbox" (click)="isDelete(u.related_profile[0].id,u.related_profile[0].employee_isDeleted)" *ngIf="!u.related_profile[0].employee_isDeleted"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -70,7 +71,8 @@
                     <div class="row mt-4">
                         <div class="col-md-4">
                           <label for="exampleDatepicker1" class="form-label">Gender</label>
-                          <select class="form-control" #gender name="gender" [(ngModel)]="e_gender">
+                          <select class="form-select" #gender name="gender" [(ngModel)]="e_gender">
+                                <option value="N/A">----Select Gender----</option>
                                 <option name="gender" value="Male">Male</option>
                                 <option name="gender" value="Female">Female</option>
                                 <option name="gender" value="Others">Others</option>
@@ -82,7 +84,7 @@
                         </div>
                         <div class="col-md-4">
                               <label class="form-label" for="form3Example1w">Blood Group</label>
-                              <select class="form-control" name="blood_group" #bgroup name="bgroup" [(ngModel)]="e_bgroup">
+                              <select class="form-select" name="blood_group" #bgroup name="bgroup" [(ngModel)]="e_bgroup">
                                   <option value="N/A">Not Known</option>
                                   <option value="A +ve">A +ve</option>
                                   <option value="A -ve">A -ve</option>
@@ -97,8 +99,8 @@
                     </div>
                     <div class="form-outline mb-3 mt-3">
                         <label class="form-label">Corresponding Address</label>
-                        <textarea class="form-control" name="address1" rows="4" cols="50" [(ngModel)]="emp_address1" #address="ngModel" required></textarea>
-                        <small class="text-danger" *ngIf="address.invalid && address.touched">Corresponding Address is required</small>
+                        <textarea class="form-control" name="address1" rows="4" cols="50" [(ngModel)]="emp_address1" #address1="ngModel" required></textarea>
+                        <small class="text-danger" *ngIf="address1.invalid && address1.touched">Corresponding Address is required</small>
                     </div>
                     <div class="form-outline mb-3">
                         <input type="checkbox" name="check" (click)="onCheckAddress($event)"/>
@@ -106,8 +108,8 @@
                     </div>
                     <div class="form-outline mb-3">
                         <label class="form-label">Permanent Address</label>
-                        <textarea name="address2" class="form-control"rows="4" cols="50" [(ngModel)]="emp_address2" #perm_address="ngModel" required></textarea>
-                        <small class="text-danger" *ngIf="perm_address.invalid && perm_address.touched">Permanent Address is required</small>
+                        <textarea name="address2" class="form-control"rows="4" cols="50" [(ngModel)]="emp_address2" #address2="ngModel" required></textarea>
+                        <small class="text-danger" *ngIf="address2.invalid && address2.touched">Permanent Address is required</small>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
@@ -117,7 +119,8 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Employee Type</label>
-                            <select class="form-control" name="employee_type" #empType [(ngModel)]="e_type">
+                            <select class="form-select" name="employee_type" #empType [(ngModel)]="e_type">
+                                <option value="N/A">----Select Employee Type----</option>
                                 <option value="Regular">Regular</option>
                                 <option value="Ad-Hoc">Ad-Hoc</option>
                                 <option value="Contractual">Contractual</option>

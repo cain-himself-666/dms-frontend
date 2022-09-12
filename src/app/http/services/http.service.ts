@@ -60,6 +60,9 @@ export class HttpService {
   get_department(id: number){
     return this.http.get<any>(`${URL}/api/department/${id}`);
   }
+  get_corresponding_department(id:number){
+    return this.http.get<any>(`${URL}/api/department?complex_id=${id}`);
+  }
   update_department(fd:any){
     return this.http.put(`${URL}/api/department/${fd.get('id')}`,fd);
   }
@@ -68,5 +71,38 @@ export class HttpService {
   }
   get_users(){
     return this.http.get<any>(`${URL}/api/user/reg`);
+  }
+  get_user(id: string){
+    return this.http.get<any>(`${URL}/api/user/reg/${id}`);
+  }
+  update_user(fd:any){
+    return this.http.put(`${URL}/api/user/reg/${fd.get('id')}`,fd);
+  }
+  allocate_designation(fd:any){
+    return this.http.post(`${URL}/api/designation/allocation`,fd);
+  }
+  allocate_duty(fd:any){
+    return this.http.post(`${URL}/api/duty/allocation`,fd);
+  }
+  get_old_cases(){
+    return this.http.get<any>(`${URL}/api/old_case_master`);
+  }
+  get_old_case(id:string){
+    return this.http.get<any>(`${URL}/api/old_case_master/${id}`);
+  }
+  update_old_case(fd:any){
+    return this.http.put(`${URL}/api/old_case_master/${fd.get('id')}`,fd);
+  }
+  update_user_isDelete(fd:any){
+    return this.http.patch(`${URL}/api/user/profile/${fd.get('id')}`,fd);
+  }
+  update_complex_isDelete(fd:any){
+    return this.http.patch(`${URL}/api/complex/${fd.get('id')}`,fd);
+  }
+  update_department_isDelete(fd:any){
+    return this.http.patch(`${URL}/api/department/${fd.get('id')}`,fd);
+  }
+  update_designation_isDelete(fd:any){
+    return this.http.patch(`${URL}/api/designation/${fd.get('id')}`,fd);
   }
 }

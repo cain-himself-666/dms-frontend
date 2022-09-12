@@ -12,6 +12,7 @@ declare var bindStepper: any;
 export class OldCaseMasterComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
+  old_cases: any = [];
   petitioner_counsels:any = [];
   respondent_counsels:any = [];
   documents: any = [];
@@ -22,6 +23,17 @@ export class OldCaseMasterComponent implements OnInit {
   judge_name:string = '';
   app_id: number = 0;
   doc: any;
+  showData: boolean = false;
+  showForm: boolean = false;
+  case_number: string = '';
+  registration_date: string = '';
+  disposal_date: string = '';
+  f_p_name: string = '';
+  f_r_name: string = '';
+  district: string = '';
+  a_p_name: string = '';
+  a_r_name: string = '';
+  b_code: string = '';
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     this.dtOptions = {
@@ -32,16 +44,31 @@ export class OldCaseMasterComponent implements OnInit {
     bindStepper();
     this.http.document_type().subscribe(data => {
       this.doc_type = data.results
+      console.log(data);
     })
     this.http.get_documents(this.app_id).subscribe(data => {
       this.documents = data.results;
     })
+    this.http.get_old_cases().subscribe(data => {
+      if(data.count === 0){
+        this.showData = false;
+      }
+      else{
+        this.showData = true;
+        this.old_cases = data.results;
+      }
+    })
   }
-  onAddJudge(){
-    let jfield = document.createElement('div');
-    jfield.className = 'mt-3';
-    jfield.innerHTML = "<label class='form-label'>Judge Name</label><input type='text' class='form-control'>";
-    document.getElementById('judge')?.appendChild(jfield);
+  onShowEntryForm(){
+    this.showForm = true;
+  }
+  onShowForm(id:string){
+    this.showForm = true;
+    this.http.get_old_case(id).subscribe(data => {
+      let a = data.petitioner_counsel.replace('|',',').split(',');
+      this.petitioner_counsels.push(a);
+      console.log(this.petitioner_counsels);
+    })
   }
   onAddPetitionerCounsel(){
     this.petitioner_counsels.push(this.pcounsel_name);
@@ -83,13 +110,13 @@ export class OldCaseMasterComponent implements OnInit {
       var petitioner_counsel = this.petitioner_counsels.toString().replace(',','|');
       var respondent_counsel = this.respondent_counsels.toString().replace(',','|');
       let fd = new FormData();
-      let init_year: any = this.datePipe.transform(data.filing_date, 'YYYY');
+      let init_year: any = this.datePipe.transform(data.reg_date, 'YYYY');
       fd.append('case_no', data.case_no);
-      fd.append('disposal_date', data.disposal_date);
+      fd.append('disposal_date', data.disp_date);
       fd.append('first_petitioner', data.first_petitioner);
       fd.append('first_respondent', data.first_respondent);
       fd.append('district', data.district);
-      fd.append('filing_date', data.filing_date);
+      fd.append('registration_date', data.reg_date);
       fd.append('case_year', init_year);
       fd.append('petitioner_counsel', petitioner_counsel);
       fd.append('respondent_counsel', respondent_counsel);
@@ -114,5 +141,4 @@ export class OldCaseMasterComponent implements OnInit {
       });
     })
   }
-
 }

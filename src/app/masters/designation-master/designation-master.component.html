@@ -17,12 +17,12 @@
                     <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions">
                         <thead>
                             <tr class="text-center">
-                                <th class="col">S.No.</th>
+                                <th class="col" width="5%">S.No.</th>
                                 <th class="col">Name</th>
                                 <th class="col">Description</th>
                                 <th class="col">Group</th>
-                                <th class="col">Operations</th>
-                                <th class="col">isDeleted</th>
+                                <th class="col" width="10%">Operations</th>
+                                <th class="col" width="10%">isDeleted</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,8 +31,9 @@
                                 <td>{{d.designation_name}}</td>
                                 <td>{{d.designation_description}}</td>
                                 <td>{{d.designation_group}}</td>
-                                <td><a (click)="onShowForm(d.id)" style="cursor: pointer; color: blue">Edit</a></td>
-                                <td class="text-center"><input type="checkbox"></td>
+                                <td class="text-center"><a (click)="onShowForm(d.id)" class="button">Edit</a></td>
+                                <td class="text-center"><input type="checkbox" checked *ngIf="d.designation_isDeleted" (click)="isDelete(d.id, d.designation_isDeleted)">
+                                        <input type="checkbox" *ngIf="!d.designation_isDeleted" (click)="isDelete(d.id, d.designation_isDeleted)"></td>
                             </tr>
                         </tbody>
                     </table>

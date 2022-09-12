@@ -4,7 +4,7 @@
         <app-header></app-header>
         <div class="complex px-5">
             <div class="title mt-4 text-center">
-                <h2>Designation Allocation</h2>
+                <h2>Duty Allocation</h2>
             </div>
             <div class="input-group mt-5 mb-4">
                 <ng-autocomplete placeholder="Enter Name ...." [data]="searchData" [searchKeyword]="keyword" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" (inputChanged)='onChangeSearch($event)'>                   
@@ -17,7 +17,7 @@
                     <div [innerHTML]="notFound"></div>
                 </ng-template>
             </div>
-            <form (ngSubmit)="onAllocateDesignation(desg.value)">
+            <form (ngSubmit)="onAllocateDuty()">
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <label class="form-label">Employee Name</label>
@@ -34,10 +34,17 @@
                         <input type="text" class="form-control" name="emp_type" [(ngModel)]="emp_type" disabled>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Designation</label>
-                        <select class="form-select" #desg>
+                        <label class="form-label">Complex</label>
+                        <select class="form-select" #comp (change)="onGetDepartments($event)"> 
                             <option value="0">----Select Designation----</option>
-                            <option *ngFor="let d of designations" value="{{d.id}}">{{ d.designation_name }}</option>
+                            <option *ngFor="let c of complex" value="{{c.id}}">{{c.complex_name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mt-4" *ngIf="showDept">
+                        <label class="form-label">Department</label>
+                        <select class="form-select" #dept (change)="onGetDepartment($event)"> 
+                            <option value="0">----Select Department----</option>
+                            <option *ngFor="let d of department" value="{{d.id}}">{{d.department_name}}</option>
                         </select>
                     </div>
                 </div>

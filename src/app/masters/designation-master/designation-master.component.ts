@@ -72,4 +72,20 @@ export class DesignationMasterComponent implements OnInit {
   onHideForm(){
     this.showForm = !this.showForm;
   }
+  isDelete(id:string, is_delete:boolean){
+    let i:any;
+    if(is_delete){
+      i = false;
+    }
+    else{
+      i = true;
+    }
+    console.log(i);
+    let fd = new FormData();
+    fd.append('id', id);
+    fd.append('designation_isDeleted', i);
+    this.http.update_designation_isDelete(fd).subscribe(data => {
+      console.log(data);
+    })
+  }
 }
