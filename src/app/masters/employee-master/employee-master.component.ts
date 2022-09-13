@@ -28,6 +28,10 @@ export class EmployeeMasterComponent implements OnInit {
   imgSrc: any;
   showForm: boolean = false;
   hidePassword: boolean = false;
+  showAddSuccess: boolean = false;
+  showUpdateSuccess: boolean = false;
+  showError: boolean = false;
+  buffer: number = 0;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -36,16 +40,7 @@ export class EmployeeMasterComponent implements OnInit {
       pageLength: 10,
       processing: true,
     }
-    this.http.get_users().subscribe(data => {
-      if(data.count === 0){
-        this.showData = false;
-      }
-      else{
-        this.showData = true;
-        this.users = data.results;
-        console.log(data);
-      }
-    })
+    this.getUser();
   }
   onCheckAddress(event:any){
     if(event.target.checked){
@@ -69,6 +64,9 @@ export class EmployeeMasterComponent implements OnInit {
     }
   }
   onShowEntryForm(){
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.showError = false;
     this.showForm = !this.showForm;
     this.e_name = '';
     this.e_contact = '';
@@ -83,29 +81,41 @@ export class EmployeeMasterComponent implements OnInit {
     this.e_type = 'N/A';
     this.e_gender = 'N/A';
     this.imgSrc = 'assets/images/dummy.jpeg';
+    // this.hidePassword = false;
   }
   onShowForm(id:string){
+    this.buffer = 1;
     this.hidePassword = true;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.showError = false;
+    // this.hidePassword = true;
     this.http.get_user(id).subscribe(data => {
       this.id = data.id;
       this.showForm = !this.showForm;
-      this.e_name = data.related_profile[0].employee_name;
-      this.e_contact = data.related_profile[0].employee_contact;
-      this.e_bgroup = data.related_profile[0].employee_blood_group;
-      this.e_dob = data.related_profile[0].employee_date_of_birth;
+      this.e_name = data.related_profile.employee_name;
+      this.e_contact = data.related_profile.employee_contact;
+      this.e_bgroup = data.related_profile.employee_blood_group;
+      this.e_dob = data.related_profile.employee_date_of_birth;
       this.e_email = data.email;
-      this.e_id = data.related_profile[0].employee_id;
-      this.emp_address1 = data.related_profile[0].employee_corresponding_address;
-      this.emp_address2 = data.related_profile[0].employee_permanent_address;
+      this.e_id = data.related_profile.employee_id;
+      this.emp_address1 = data.related_profile.employee_corresponding_address;
+      this.emp_address2 = data.related_profile.employee_permanent_address;
       this.e_role = data.related_groups[0].id;
       this.e_username = data.username;
-      this.e_type = data.related_profile[0].employee_type;
-      this.e_gender = data.related_profile[0].employee_gender;
-      this.imgSrc = data.related_profile[0].employee_photo;
+      this.e_type = data.related_profile.employee_type;
+      this.e_gender = data.related_profile.employee_gender;
+      this.imgSrc = data.related_profile.employee_photo;
     })
   }
   onHideForm(){
     this.showForm = !this.showForm;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.showError = false;
+    // this.hidePassword = false;
+    this.buffer = 0;
+    this.getUser();
   }
   onRegistration(data:any, gender: string, bgroup:string, empType: string, group:string){
     let fd = new FormData();
@@ -123,12 +133,31 @@ export class EmployeeMasterComponent implements OnInit {
     fd.append('email', data.email);
     fd.append('employee_permanent_address', data.address2);
     fd.append('group', group);
-    fd.append('password', data.password);
-    fd.append('password2', data.password);
     fd.append('username', data.username);
-    this.http.add_user(fd).subscribe(data => {
-      console.log(data);
-    })
+    if(this.buffer === 0){
+      fd.append('password', data.password);
+      fd.append('password2', data.password);
+      this.http.add_user(fd).subscribe(data => {
+        this.showAddSuccess = true;
+        this.showUpdateSuccess = false;
+        this.showError = false;
+      },err => {
+        this.showAddSuccess = false;
+        this.showUpdateSuccess = false;
+        this.showError = true;
+      })
+    }
+    else{
+      fd.append('id', this.id);
+      this.http.update_user(fd).subscribe(data => {
+        this.showUpdateSuccess = true;
+        this.showAddSuccess = false;
+      },err => {
+        this.showAddSuccess = false;
+        this.showUpdateSuccess = false;
+        this.showError = true;
+      })
+    }
   }
   isDelete(id:string, is_delete: boolean){
     let i:any;
@@ -142,7 +171,18 @@ export class EmployeeMasterComponent implements OnInit {
     fd.append('employee_isDeleted', i);
     fd.append('id', id);
     this.http.update_user_isDelete(fd).subscribe(data =>{
-      console.log(data);
+      this.getUser();
+    })
+  }
+  getUser(){
+    this.http.get_users().subscribe(data => {
+      if(data.count === 0){
+        this.showData = false;
+      }
+      else{
+        this.showData = true;
+        this.users = data.results;
+      }
     })
   }
 }

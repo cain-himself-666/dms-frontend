@@ -1,1 +1,81 @@
-<p>profile works!</p>
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="block w-100">
+        <app-header></app-header>
+        <div class="title text-center">
+            <h1>Profile</h1>
+        </div>
+        <div class="profile px-5">
+            <ul class="nav nav-tabs mt-5" style="cursor: pointer">
+                <li class="nav-item"><a (click)="onShowDetails()" class="nav-link det active" [ngClass]="{'active': toggle, '':!toggle}">Details</a></li>
+                <li class="nav-item"><a (click)="onShowChangePassword()" class="nav-link pass" [ngClass]="{'': toggle, 'active':!toggle}">Change Password</a></li>
+            </ul>
+            <div class="details mt-5" [hidden]="showDetails">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{{ imgSrc }}" width="160" height="160">
+                    </div>
+                    <!-- <div class="col-md-8">
+                        <label>Logs</label><br>
+                        <label>Login at 10:00 AM</label><br>
+                        <label>Login at 10:00 AM</label><br>
+                        <label>Login at 10:00 AM</label>
+                    </div> -->
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="emp_name" [(ngModel)]="emp_name" disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Email ID</label>
+                        <input type="text" class="form-control" name="emp_email" [(ngModel)]="emp_email" disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Gender</label>
+                        <input type="text" class="form-control" name="emp_gender" [(ngModel)]="emp_gender" disabled>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="emp_uname" [(ngModel)]="emp_uname"disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Employee Type</label>
+                        <input type="text" class="form-control" name="emp_type" [(ngModel)]="emp_type" disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Blood Group</label>
+                        <input type="text" class="form-control" name="emp_bgroup" [(ngModel)]="emp_bgroup" disabled>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" rows="6" name="emp_add" [(ngModel)]="emp_add" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="password mt-5" [hidden]="showChangePassword">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Enter Current Password</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Enter New Password</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="mt-4 mb-5 text-end">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

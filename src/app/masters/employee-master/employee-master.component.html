@@ -29,13 +29,13 @@
                         <tbody>
                             <tr *ngFor="let u of users; let i=index">
                                 <td>{{u.username}}</td>
-                                <td>{{u.related_profile[0].employee_name}}</td>
-                                <td>{{u.related_profile[0].employee_id}}</td>
-                                <td>{{u.related_profile[0].employee_type}}</td>
-                                <td>{{u.related_profile[0].employee_gender}}</td>
+                                <td>{{u.related_profile.employee_name}}</td>
+                                <td>{{u.related_profile.employee_id}}</td>
+                                <td>{{u.related_profile.employee_type}}</td>
+                                <td>{{u.related_profile.employee_gender}}</td>
                                 <td class="text-center"><a class="button" (click)="onShowForm(u.id)">Edit</a></td>
-                                <td class="text-center"><input type="checkbox" (click)="isDelete(u.related_profile[0].id,u.related_profile[0].employee_isDeleted)" checked *ngIf="u.related_profile[0].employee_isDeleted">
-                                                        <input type="checkbox" (click)="isDelete(u.related_profile[0].id,u.related_profile[0].employee_isDeleted)" *ngIf="!u.related_profile[0].employee_isDeleted"></td>
+                                <td class="text-center"><input type="checkbox" (click)="isDelete(u.related_profile.id,u.related_profile.employee_isDeleted)" checked *ngIf="u.related_profile.employee_isDeleted">
+                                                        <input type="checkbox" (click)="isDelete(u.related_profile.id,u.related_profile.employee_isDeleted)" *ngIf="!u.related_profile.employee_isDeleted"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -158,6 +158,15 @@
                             <input type="password" name="conf_password" class="form-control" ngModel #conf_password="ngModel"/>
                             <small class="text-danger" *ngIf="conf_password.value !== password.value">Password is did not match</small>
                         </div>
+                    </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showAddSuccess">
+                        Employee Registered Successfully !!
+                    </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showUpdateSuccess">
+                        Employee Details Updated Successfully !!
+                    </div>
+                    <div class="alert alert-danger mt-4 mb-4" *ngIf="showError">
+                        Error !! Data already exists
                     </div>
                     <div class="mt-4 mb-5 text-end">
                         <button class="btn btn-primary mx-3" type="button" (click)="onHideForm()">Go Back</button>

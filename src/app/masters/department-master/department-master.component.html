@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let d of departments;let i=index">
-                                <td>{{i+1}}</td>
+                                <td class="text-center">{{i+1}}</td>
                                 <td>{{d.department_name}}</td>
                                 <td>{{d.department_description}}</td>
                                 <td class="text-center"><a (click)="onShowForm(d.id)" class="button">Edit</a></td>
@@ -57,6 +57,12 @@
                             <label class="form-label">Department Description</label>
                             <textarea class="form-control" cols="30" rows="5" name="dept_descp" [(ngModel)]="d_descp" #dept_descp="ngModel" required></textarea>
                         </div>
+                    </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showAddSuccess">
+                        Department Added Successfully !!
+                    </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showUpdateSuccess">
+                        Department Updated Successfully !!
                     </div>
                     <div class="text-end mt-4 mb-5">
                         <button class="btn btn-primary mx-3" type="button" (click)="onHideForm()">Go back</button>

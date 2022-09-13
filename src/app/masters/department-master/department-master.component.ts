@@ -17,6 +17,8 @@ export class DepartmentMasterComponent implements OnInit {
   showForm: boolean = false;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
+  showAddSuccess: boolean = false;
+  showUpdateSuccess: boolean = false;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -28,15 +30,7 @@ export class DepartmentMasterComponent implements OnInit {
       pageLength: 10,
       processing: true,
     }
-    this.http.get_departments().subscribe(data => {
-      if(data.results.length === 0){
-        this.showData = false;
-      }
-      else{
-        this.showData = true;
-        this.departments = data.results;
-      }
-    })
+    this.getDepartment();
   }
   onSubmitDept(data:any, complex_id:string){
     let fd = new FormData();
@@ -45,7 +39,8 @@ export class DepartmentMasterComponent implements OnInit {
       fd.append('department_description', data.dept_descp);
       fd.append('department_complex', complex_id);
       this.http.add_department(fd).subscribe(data => {
-        console.log(data);
+        this.showAddSuccess = true;
+        this.showUpdateSuccess = false;
       })
     }
     else{
@@ -54,13 +49,16 @@ export class DepartmentMasterComponent implements OnInit {
       fd.append('department_complex', complex_id);
       fd.append('id', this.d_id);
       this.http.update_department(fd).subscribe(data => {
-        console.log(data);
+        this.showAddSuccess = false;
+        this.showUpdateSuccess = true;
       })
     }
   }
   onShowForm(id: number){
     this.d_id = id;
     this.showForm = !this.showForm;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
     this.http.get_department(id).subscribe(data => {
       this.d_name = data.department_name;
       this.d_descp = data.department_description;
@@ -69,12 +67,17 @@ export class DepartmentMasterComponent implements OnInit {
   }
   onShowEntryForm(){
     this.showForm = !this.showForm;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
     this.d_name = '';
     this.d_descp = '';
     this.complex_name = '0';
   }
   onHideForm(){
     this.showForm = !this.showForm;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.getDepartment();
   }
   isDelete(id:string, is_delete:boolean){
     let i:any;
@@ -88,7 +91,18 @@ export class DepartmentMasterComponent implements OnInit {
     fd.append('id', id);
     fd.append('department_isDeleted', i);
     this.http.update_department_isDelete(fd).subscribe(data => {
-      console.log(data);
+      this.getDepartment();
+    })
+  }
+  getDepartment(){
+    this.http.get_departments().subscribe(data => {
+      if(data.results.length === 0){
+        this.showData = false;
+      }
+      else{
+        this.showData = true;
+        this.departments = data.results;
+      }
     })
   }
 }

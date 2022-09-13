@@ -7,11 +7,11 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown px-4">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 19px;">
-                        <i class="bi bi-person-workspace" style="letter-spacing: 10px;"></i>User
+                        <i class="bi bi-person-workspace" style="letter-spacing: 10px;"></i>{{username}}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink" style="cursor: pointer;">
-                        <li><a class="dropdown-item">My Profile</a></li>
-                        <hr>
+                        <li *ngIf="username !== 'admin'"><a class="dropdown-item" href="/profile">My Profile</a></li>
+                        <hr *ngIf="username !== 'admin'">
                         <li><a class="dropdown-item" (click)="onLogout()">Logout</a></li>
                     </ul>
                 </li>

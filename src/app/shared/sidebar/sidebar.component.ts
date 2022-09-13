@@ -8,7 +8,7 @@ import { LocalstorageService } from 'src/app/http/services/localstorage.service'
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-
+  group: any = this.local_storage.getUserGroup();
   constructor(private _renderer2: Renderer2, @Inject(DOCUMENT) private _document: Document, private local_storage: LocalstorageService) { }
   ngOnInit(): void {
     let script = this._renderer2.createElement('script');

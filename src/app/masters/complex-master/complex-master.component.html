@@ -51,6 +51,12 @@
                             <textarea class="form-control" cols="30" rows="5" name="complex_description" [(ngModel)]="c_descp" #complex_description="ngModel" required></textarea>
                         </div>
                     </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showAddSuccess">
+                        Complex Added Successfully !!
+                    </div>
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showUpdateSuccess">
+                        Complex Updated Successfully !!
+                    </div>
                     <div class="text-end mt-4 mb-5">
                         <button class="btn btn-primary mx-3" (click)="onHideUpdate()" type="button">Go Back</button>
                         <button class="btn btn-primary">Submit</button>

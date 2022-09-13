@@ -18,6 +18,7 @@ export class DutyAllocationComponent implements OnInit {
   showDept: boolean = false;
   complex_id: string = '';
   department_id:string = '';
+  showSuccess: boolean = false;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -28,7 +29,7 @@ export class DutyAllocationComponent implements OnInit {
       data.results.forEach((element:any) => {
         this.buffer.push({
           'id': element.id,
-          'name': element.related_profile[0].employee_name,
+          'name': element.related_profile.employee_name,
         })
       });
     })
@@ -73,7 +74,7 @@ export class DutyAllocationComponent implements OnInit {
     fd.append('complex_id', this.complex_id);
     fd.append('employee_id', this.id);
     this.http.allocate_duty(fd).subscribe(data => {
-      console.log(data);
+      this.showSuccess = true
     })
   }
 }

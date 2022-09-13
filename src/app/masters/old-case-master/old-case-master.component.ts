@@ -13,8 +13,8 @@ export class OldCaseMasterComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
   old_cases: any = [];
-  petitioner_counsels:any = [];
-  respondent_counsels:any = [];
+  petitioner_counsels:Array<string> = [];
+  respondent_counsels:Array<string> = [];
   documents: any = [];
   judges:any = [];
   doc_type:any = [];
@@ -25,15 +25,21 @@ export class OldCaseMasterComponent implements OnInit {
   doc: any;
   showData: boolean = false;
   showForm: boolean = false;
+  doc_type_field: string = '0';
+  file_upload: string = '';
   case_number: string = '';
   registration_date: string = '';
   disposal_date: string = '';
   f_p_name: string = '';
   f_r_name: string = '';
-  district: string = '';
+  case_district: string = '';
   a_p_name: string = '';
   a_r_name: string = '';
   b_code: string = '';
+  showDocGrid:boolean = false;
+  id: number = 0;
+  showAddSuccess: boolean = false;
+  showUpdateSuccess: boolean = false;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     this.dtOptions = {
@@ -44,30 +50,46 @@ export class OldCaseMasterComponent implements OnInit {
     bindStepper();
     this.http.document_type().subscribe(data => {
       this.doc_type = data.results
-      console.log(data);
     })
-    this.http.get_documents(this.app_id).subscribe(data => {
-      this.documents = data.results;
-    })
-    this.http.get_old_cases().subscribe(data => {
-      if(data.count === 0){
-        this.showData = false;
-      }
-      else{
-        this.showData = true;
-        this.old_cases = data.results;
-      }
-    })
+    this.getOldCases();
   }
   onShowEntryForm(){
     this.showForm = true;
   }
   onShowForm(id:string){
     this.showForm = true;
+    this.id = 1;
     this.http.get_old_case(id).subscribe(data => {
-      let a = data.petitioner_counsel.replace('|',',').split(',');
-      this.petitioner_counsels.push(a);
-      console.log(this.petitioner_counsels);
+      this.petitioner_counsels = data.petitioner_counsel.split('|');
+      this.respondent_counsels = data.respondent_counsel.split('|');
+      this.judges = data.judge_name.split('|');
+      this.case_number = data.case_no;
+      this.registration_date = data.registration_date;
+      this.disposal_date = data.disposal_date;
+      this.f_p_name = data.first_petitioner;
+      this.f_r_name = data.first_respondent;
+      this.a_p_name = data.additional_petitioner;
+      this.a_r_name = data.additional_respondent;
+      this.b_code = data.disposal_bench_code;
+      this.case_district = data.district;
+      this.documents = data.related_documents;
+      this.app_id = data.id;
+      if(this.documents.length !== 0){
+        this.showDocGrid = true;
+      }
+    })
+  }
+  onHideForm(){
+    this.showForm = false;
+    this.id = 0;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.getDocuments();
+  }
+  onDeleteDocument(id:string){
+    this.http.delete_document(id).subscribe(data => {
+      this.getDocuments();
+      this.showDocGrid = false;
     })
   }
   onAddPetitionerCounsel(){
@@ -107,6 +129,7 @@ export class OldCaseMasterComponent implements OnInit {
       alert('Please add atleast one judge');
     }
     else{
+      let case_id: any = this.app_id
       var petitioner_counsel = this.petitioner_counsels.toString().replace(',','|');
       var respondent_counsel = this.respondent_counsels.toString().replace(',','|');
       let fd = new FormData();
@@ -124,9 +147,19 @@ export class OldCaseMasterComponent implements OnInit {
       fd.append('additional_petitioner', data.addn_pet_name);
       fd.append('additional_respondent', data.addn_res_name);
       fd.append('judge_name', this.judges.toString().replace(',','|'));
-      this.http.case_entry(fd).subscribe(data => {
-        this.app_id = data.id
-      })
+      if(this.id === 0){
+        this.http.case_entry(fd).subscribe(data => {
+          this.app_id = data.id
+          document.getElementById('save')?.setAttribute('disabled','');
+          this.showAddSuccess = true;
+        })
+      }
+      else{
+        this.http.update_case(fd, case_id).subscribe(data => {
+          this.showUpdateSuccess = true;
+          document.getElementById('save')?.setAttribute('disabled','');
+        })
+      }
     }
   }
   onAddStep2(doc_type:string){
@@ -135,10 +168,31 @@ export class OldCaseMasterComponent implements OnInit {
     fd.append('type_id', doc_type);
     fd.append('document_url', this.doc);
     this.http.add_document(fd).subscribe(data => {
-      this.http.get_documents(this.app_id).subscribe(data => {
-        this.documents = data.results;
-        console.log(this.documents);
-      });
+      this.showDocGrid = true;
+      this.getDocuments();
+      this.doc_type_field = '0';
+      this.file_upload = '';
     })
+  }
+  getDocuments(){
+    this.http.get_documents(this.app_id).subscribe(data => {
+      this.documents = data.results;
+    });
+  }
+  getOldCases(){
+    this.http.get_old_cases().subscribe(data => {
+      if(data.count === 0){
+        this.showData = false;
+      }
+      else{
+        this.showData = true;
+        this.old_cases = data.results;
+        console.log(data);
+      }
+    })
+  }
+  onHideAlerts(){
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
   }
 }

@@ -14,6 +14,7 @@ export class DesignationAllocationComponent implements OnInit {
   buffer: any = [];
   designations: any = [];
   id:string = '';
+  showSuccess: boolean = false;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -24,7 +25,7 @@ export class DesignationAllocationComponent implements OnInit {
       data.results.forEach((element:any) => {
         this.buffer.push({
           'id': element.id,
-          'name': element.related_profile[0].employee_name,
+          'name': element.related_profile.employee_name,
         })
       });
     })
@@ -50,7 +51,7 @@ export class DesignationAllocationComponent implements OnInit {
     fd.append('employee_id', this.id);
     fd.append('designation_id', desg);
     this.http.allocate_designation(fd).subscribe(data => {
-      console.log(data);
+      this.showSuccess = true;
     })
   }
 }

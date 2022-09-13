@@ -13,6 +13,7 @@ import { ComplexMasterComponent } from './masters/complex-master/complex-master.
 import { DesignationAllocationComponent } from './accounts/designation-allocation/designation-allocation.component';
 import { OldCaseMasterComponent } from './masters/old-case-master/old-case-master.component';
 import { DutyAllocationComponent } from './accounts/duty-allocation/duty-allocation.component';
+import { ProfileComponent } from './public/profile/profile.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "login" },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: "designation-allocation", component: DesignationAllocationComponent},
   { path: "duty-allocation", component: DutyAllocationComponent},
   { path: "old-case", component: OldCaseMasterComponent},
+  { path: "profile", component: ProfileComponent},
   { path: "**", component: PagenotfoundComponent}
 ];
 

@@ -18,7 +18,7 @@
                 <li><a href="/dashboard" class="links_name" style="color: white">Dashboard</a></li>
             </ul>
         </li>
-        <li class="parent">
+        <li class="parent" *ngIf="group !== 'Data Entry Operator'">
             <div class="icon-link">
                 <label class="arrow">
                     <i class="bi bi-briefcase"></i>
@@ -33,7 +33,7 @@
                 <li><a href="/designation">Designation Master</a></li>
             </ul>
         </li>
-        <li class="parent">
+        <li class="parent" *ngIf="group !== 'Data Entry Operator'">
             <div class="icon-link">
                 <label>
                     <i class="bi bi-person-badge"></i>
@@ -48,7 +48,7 @@
                 <li><a href="/duty-allocation">Duty Allocation</a></li>
             </ul>
         </li>
-        <li>
+        <li *ngIf="group === 'Data Entry Operator'">
             <a href="/old-case">
                 <i class="bi bi-journal-plus"></i>
                 <span class="links_name">Old Case</span>

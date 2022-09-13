@@ -30,6 +30,11 @@ export class LocalstorageService {
     let res_data: any = JSON.parse(CryptoJS.AES.decrypt(data,KEY).toString(CryptoJS.enc.Utf8));
     return res_data.related_groups[0].name;
   }
+  public getUserData(){
+    let data: any = window.localStorage.getItem('details');
+    let res_data: any = JSON.parse(CryptoJS.AES.decrypt(data,KEY).toString(CryptoJS.enc.Utf8));
+    return res_data;
+  }
   public getUserName(){
     let data: any = window.localStorage.getItem('details');
     let res_data: any = JSON.parse(CryptoJS.AES.decrypt(data,KEY).toString(CryptoJS.enc.Utf8));

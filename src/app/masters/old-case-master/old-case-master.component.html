@@ -20,16 +20,14 @@
                             <th class="col">Case No.</th>
                             <th class="col">Parties</th>
                             <th class="col">Operations</th>
-                            <th class="col">isDeleted</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let o of old_cases; let i = index">
-                            <td>{{i+1}}</td>
+                            <td width="5%" class="text-center">{{i+1}}</td>
                             <td>{{o.case_no}}</td>
                             <td>{{o.first_petitioner}} v/s {{o.first_respondent}}</td>
-                            <td width="10%" class="text-center"><a class="button" (click)="onShowForm(o.id)">Edit</a></td>
-                            <td width="10%" class="text-center"><input type="checkbox"></td>
+                            <td width="8%" class="text-center"><a class="button" (click)="onShowForm(o.id)">Edit</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -54,27 +52,27 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="form-label">Case No<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="case_no" id="case_no" ngModel #case_no="ngModel" required>
+                                <input type="text" class="form-control" name="case_no" id="case_no" [(ngModel)]="case_number" #case_no="ngModel" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Registration Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="reg_date" id="filing_date" ngModel #reg_date="ngModel" required>
+                                <input type="date" class="form-control" name="reg_date" id="filing_date" [(ngModel)]="registration_date" #reg_date="ngModel" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Judgement Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="disp_date" id="disposal_date" ngModel #disp_date="ngModel" required>
+                                <input type="date" class="form-control" name="disp_date" id="disposal_date" [(ngModel)]="disposal_date" #disp_date="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
                                 <label class="form-label">First Petitioner Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="first_petitioner" id="first_petitioner" ngModel #first_petitioner="ngModel" required>
+                                <input type="text" class="form-control" name="first_petitioner" id="first_petitioner" [(ngModel)]="f_p_name" #first_petitioner="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
                                 <label class="form-label">First Respondent Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="first_respondent" id="first_respondent" ngModel #first_respondent="ngModel" required>
+                                <input type="text" class="form-control" name="first_respondent" id="first_respondent" [(ngModel)]="f_r_name" #first_respondent="ngModel" required>
                             </div>
                             <div class="col-md-4 mt-4">
                                 <label class="form-label">District<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="district" id="district" ngModel #district="ngModel" required>
+                                <input type="text" class="form-control" name="district" id="district" [(ngModel)]="case_district" #district="ngModel" required>
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -120,15 +118,15 @@
                         <div class="row mt-4">
                             <div class="col-md-4">
                                 <label class="form-label">Additional Petitioner Name</label>
-                                <input class="form-control" type="text" name="addn_pet_name" ngModel #addn_pet_name="ngModel">
+                                <input class="form-control" type="text" name="addn_pet_name" [(ngModel)]="a_p_name" #addn_pet_name="ngModel">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Additional Respondent Name</label>
-                                <input class="form-control" type="text" name="addn_res_name" ngModel #addn_res_name="ngModel">
+                                <input class="form-control" type="text" name="addn_res_name" [(ngModel)]="a_r_name" #addn_res_name="ngModel">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Bench Code<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="bench_code" id="bench_code" ngModel #bench_code="ngModel">
+                                <input class="form-control" type="text" name="bench_code" id="bench_code" [(ngModel)]="b_code" #bench_code="ngModel">
                             </div>
                         </div>
                         <div class="judge mt-4">
@@ -148,8 +146,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-end mt-5 mb-5">
-                            <button class="btn btn-primary click text-end nextBtn">Next<i class="bi bi-arrow-right-circle ms-2"></i></button>
+                        <div class="alert alert-success mt-4 mb-3" *ngIf="showAddSuccess">
+                            Case Added Successfully !!!
+                        </div>
+                        <div class="alert alert-success mt-4 mb-3" *ngIf="showUpdateSuccess">
+                            Case Updated Successfully !!!
+                        </div>
+                        <div class="text-end mt-4 mb-5">
+                            <button class="btn btn-primary mx-2" type="button" (click)="onHideForm()">Go Back</button>
+                            <button class="btn btn-primary mx-3" id="save">Save</button>
+                            <button class="btn btn-primary click text-end nextBtn" (click)="onHideAlerts()" type="button">Next</button>
                         </div>
                     </form>
                 </div>
@@ -157,21 +163,24 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label class="form-label">Document Type</label>
-                            <select class="form-select" #docType>
+                            <select class="form-select" #docType name="docType" [(ngModel)]="doc_type_field">
                                 <option value="0">--- Select Document Type ---</option>
                                 <option *ngFor="let d of doc_type" value="{{d.id}}">{{d.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Upload File</label>
-                            <input type="file" class="form-control" accept="application/pdf" (change)="onFileUpload($event)">
+                            <input type="file" class="form-control" accept="application/pdf" (change)="onFileUpload($event)" name="file_upload" [(ngModel)]="file_upload">
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary click" style="margin-top: 31px;" type="button" (click)="onAddStep2(docType.value)">Upload</button>
                         </div>
                     </div>
                     <div class="mt-4">
-                        <table class="table table-hover table-responsive">
+                        <div class="mb-4" *ngIf="!showDocGrid">
+                            No Document Uploaded !!
+                        </div>
+                        <table class="table table-hover table-responsive" *ngIf="showDocGrid">
                             <thead>
                                 <tr>
                                     <th class="col text-center">S.No.</th>
@@ -185,7 +194,7 @@
                                     <td class="text-center" width="7%">{{i+1}}</td>
                                     <td>{{d.related_type.name}}</td>
                                     <td><a href="{{d.document_url}}" target="_blank">Test.pdf</a></td>
-                                    <td class="text-center" width="5%"><i class="bi bi-x-circle" style="color: red; font-size: 21px; cursor:pointer"></i></td>
+                                    <td class="text-center" width="5%"><i class="bi bi-x-circle" style="color: red; font-size: 21px; cursor:pointer" (click)="onDeleteDocument(d.id)"></i></td>
                                 </tr>
                             </tbody>
                         </table>

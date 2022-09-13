@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  // username: string = this.local_storage.getUserName();
+  username: string = this.local_storage.getUserName();
   constructor(private http: HttpService, private local_storage: LocalstorageService, private route: Router) { }
 
   ngOnInit(): void {

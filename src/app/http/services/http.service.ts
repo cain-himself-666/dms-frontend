@@ -18,6 +18,9 @@ export class HttpService {
   case_entry(fd:any){
     return this.http.post<any>(`${URL}/api/old_case_master`, fd);
   }
+  update_case(fd:any, id:string){
+    return this.http.patch(`${URL}/api/old_case_master/${id}`, fd);
+  }
   document_type(){
     return this.http.get<any>(`${URL}/api/document_type`);
   }
@@ -26,6 +29,9 @@ export class HttpService {
   }
   get_documents(case_id: any){
     return this.http.get<any>(`${URL}/api/old_case_document`, { params: { case_id: case_id}});
+  }
+  delete_document(id: string){
+    return this.http.delete(`${URL}/api/old_case_document/${id}`);
   }
   add_complex(fd:any){
     return this.http.post(`${URL}/api/complex`, fd);
@@ -76,7 +82,7 @@ export class HttpService {
     return this.http.get<any>(`${URL}/api/user/reg/${id}`);
   }
   update_user(fd:any){
-    return this.http.put(`${URL}/api/user/reg/${fd.get('id')}`,fd);
+    return this.http.patch(`${URL}/api/user/reg/${fd.get('id')}`,fd);
   }
   allocate_designation(fd:any){
     return this.http.post(`${URL}/api/designation/allocation`,fd);
