@@ -1,0 +1,225 @@
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="d-block w-100">
+        <app-header></app-header>
+        <div class="title text-center mt-4">
+            <h2>Cases</h2>
+        </div>
+        <div class="grid-view mt-5 px-5" *ngIf="!showDetails">
+            <div class="mt-4 text-center" *ngIf="!showData">
+                <h4>No Cases Found !!</h4>
+            </div>
+            <div class="mt-4" *ngIf="showData">
+                <table class="table table-bordered table-responsive mt-4" datatable [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th class="col">S.No.</th>
+                            <th class="col">Case No</th>
+                            <th class="col">Parties</th>
+                            <th class="col">Operations</th>
+                            <th class="col">Is Approved ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of old_cases; let i=index">
+                            <td class="text-center" width="5%">{{i+1}}</td>
+                            <td>{{o.case_no}}</td>
+                            <td>{{o.first_petitioner}} v/s {{o.first_respondent}}</td>
+                            <td class="text-center" width="10%"><a (click)="onShowDetails(o.id)" class="button">View</a></td>
+                            <td class="text-center" width="10%"><input type="checkbox"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="details mt-5 px-5" *ngIf="showDetails">
+            <div class="row">
+                <h3>Case Details</h3>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Case No</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{case_no}}</span>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>District</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{district}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Registration Date</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{reg_date}}</span>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Bench Code</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{b_code}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Judgement Date</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{judge_date}}</span>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Judge(s)</b></label>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label"><b>:</b></label>
+                        </div>
+                        <div class="col-md-7">
+                            <span>{{judges}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="petitioner ">
+                            <h3>Petitioner</h3>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>First Petitioner</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ f_p_name }}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>Petitioner Counsel(s)</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ p_counsels }}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>Additional Petitioner</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ a_p_name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="petitioner">
+                            <h3>Respondent</h3>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>First Respondent</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ f_p_name }}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>Respondent Counsel(s)</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ r_counsels }}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <label class="form-label"><b>Additional Respondent</b></label>
+                            </div>
+                            <div class="col-md-1">
+                                <label class="form-label"><b>:</b></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label">{{ a_r_name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="title">
+                    <h3>Documents</h3>
+                </div>
+                <div class="mt-4 mb-5" *ngIf="!showDocuments">
+                    <h6>No Documents Provided</h6>
+                </div>
+                <div *ngIf="showDocuments">
+                    <table class="table table-responsive table-hover mt-4 mb-5">
+                        <thead>
+                            <tr>
+                                <th class="col">S.No.</th>
+                                <th class="col">Document Type</th>
+                                <th class="col" class="text-center">Operations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of documents;let i=index">
+                                <td class="text-center" width="5%">{{i+1}}</td>
+                                <td>{{d.related_type.name}}</td>
+                                <td class="text-center" width="10%"><a class="button" href="{{d.document_url}}" target="_blank">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-end mt-4 mb-5">
+                <button class="btn btn-primary" type="button" (click)="onHideDetails()">Go Back</button>
+            </div>
+        </div>
+    </div> 
+</div>

@@ -23,15 +23,20 @@ export class EmployeeMasterComponent implements OnInit {
   e_username:string = '';
   emp_address1: string = '';
   emp_address2: string = '';
+  password1: string = '';
+  password2: string = '';
   id: string = '';
   photo: any;
   imgSrc: any;
   showForm: boolean = false;
-  hidePassword: boolean = false;
   showAddSuccess: boolean = false;
   showUpdateSuccess: boolean = false;
+  showPassUpdate: boolean = false;
   showError: boolean = false;
   buffer: number = 0;
+  profile_id: string = '';
+  showDetails: boolean = false;
+  showPassword: boolean = false;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -81,17 +86,20 @@ export class EmployeeMasterComponent implements OnInit {
     this.e_type = 'N/A';
     this.e_gender = 'N/A';
     this.imgSrc = 'assets/images/dummy.jpeg';
-    // this.hidePassword = false;
+    this.showDetails = true;
+    this.showPassword = true;
   }
   onShowForm(id:string){
+    this.showDetails = true;
+    this.showPassword = false;
     this.buffer = 1;
-    this.hidePassword = true;
     this.showAddSuccess = false;
     this.showUpdateSuccess = false;
     this.showError = false;
-    // this.hidePassword = true;
     this.http.get_user(id).subscribe(data => {
       this.id = data.id;
+      // console.log(data);
+      this.profile_id = data.related_profile.id;
       this.showForm = !this.showForm;
       this.e_name = data.related_profile.employee_name;
       this.e_contact = data.related_profile.employee_contact;
@@ -113,9 +121,28 @@ export class EmployeeMasterComponent implements OnInit {
     this.showAddSuccess = false;
     this.showUpdateSuccess = false;
     this.showError = false;
-    // this.hidePassword = false;
+    this.showPassword = false;
     this.buffer = 0;
     this.getUser();
+  }
+  onShowChangePassword(){
+    this.showPassword = true;
+    this.showDetails = false;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.showError = false;
+    document.getElementById('username')?.setAttribute('disabled','');
+    this.buffer = 2;
+  }
+  onShowDetails(){
+    this.showPassword = false;
+    this.showDetails = true;
+    this.showAddSuccess = false;
+    this.showUpdateSuccess = false;
+    this.showError = false;
+    document.getElementById('username')?.removeAttribute('disabled');
+    this.showPassUpdate = false;
+    this.buffer = 1;
   }
   onRegistration(data:any, gender: string, bgroup:string, empType: string, group:string){
     let fd = new FormData();
@@ -141,21 +168,38 @@ export class EmployeeMasterComponent implements OnInit {
         this.showAddSuccess = true;
         this.showUpdateSuccess = false;
         this.showError = false;
+        this.showPassUpdate = false;
       },err => {
         this.showAddSuccess = false;
         this.showUpdateSuccess = false;
         this.showError = true;
+        this.showPassUpdate = false;
+      })
+    }
+    else if(this.buffer === 1){
+      fd.append('profile_id', this.profile_id);
+      fd.append('id', this.id);
+      this.http.update_profile(fd).subscribe(data => {
+        this.http.update_user(fd).subscribe(data => {});
+        this.showUpdateSuccess = true;
+        this.showAddSuccess = false;
+        this.showPassUpdate = false;
+        this.showError = false;
+      },err => {
+        this.showAddSuccess = false;
+        this.showUpdateSuccess = false;
+        this.showError = true;
+        this.showPassUpdate = false;
       })
     }
     else{
       fd.append('id', this.id);
+      fd.append('password', this.password1);
+      fd.append('password2', this.password2);
       this.http.update_user(fd).subscribe(data => {
-        this.showUpdateSuccess = true;
-        this.showAddSuccess = false;
+        this.showPassUpdate = true;
       },err => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = false;
-        this.showError = true;
+        console.log(err);
       })
     }
   }

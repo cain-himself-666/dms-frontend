@@ -22,15 +22,14 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_profile = this.local_storage.getUserData();
-    this.emp_name = this.user_profile.related_profile.employee_name;
-    this.emp_type = this.user_profile.related_profile.employee_type;
-    this.emp_gender = this.user_profile.related_profile.employee_gender;
-    this.emp_add = this.user_profile.related_profile.employee_permanent_address;
-    this.emp_email = this.user_profile.email;
-    this.emp_uname = this.user_profile.username;
-    this.emp_bgroup = this.user_profile.related_profile.employee_bgroup;
+    this.emp_name = this.user_profile.related_profile.employee_name || 'N/A';
+    this.emp_type = this.user_profile.related_profile.employee_type || 'N/A';
+    this.emp_gender = this.user_profile.related_profile.employee_gender || 'N/A';
+    this.emp_add = this.user_profile.related_profile.employee_permanent_address || 'N/A';
+    this.emp_email = this.user_profile.email || 'N/A';
+    this.emp_uname = this.user_profile.username || 'N/A';
+    this.emp_bgroup = this.user_profile.related_profile.employee_blood_group || 'N/A';
     this.imgSrc = this.user_profile.related_profile.employee_photo;
-    console.log(this.imgSrc);
   }
   onShowChangePassword(){
     this.showChangePassword = false;

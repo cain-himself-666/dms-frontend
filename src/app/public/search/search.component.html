@@ -1,0 +1,12 @@
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="d-block w-100">
+        <app-header></app-header>
+        <form #query="ngForm" (ngSubmit)="onSearch(query.value)">
+            <div class="input-group mt-5 mb-3 px-5">
+                <input type="text" class="form-control" placeholder="Enter search parameters ...." name="query" ngModel query="ngModel" required>
+                <button class="btn btn-primary" id="button-addon2"><i class="bi bi-search mx-2"></i>Search</button>
+            </div>
+        </form>
+    </div>
+</div>

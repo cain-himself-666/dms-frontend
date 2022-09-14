@@ -1,7 +1,6 @@
 import { Renderer2,Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { LocalstorageService } from 'src/app/http/services/localstorage.service';
-
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',

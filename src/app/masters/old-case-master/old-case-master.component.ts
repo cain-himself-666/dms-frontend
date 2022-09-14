@@ -89,8 +89,7 @@ export class OldCaseMasterComponent implements OnInit {
   onDeleteDocument(id:string){
     this.http.delete_document(id).subscribe(data => {
       this.getDocuments();
-      this.showDocGrid = false;
-    })
+    });
   }
   onAddPetitionerCounsel(){
     this.petitioner_counsels.push(this.pcounsel_name);
@@ -176,7 +175,13 @@ export class OldCaseMasterComponent implements OnInit {
   }
   getDocuments(){
     this.http.get_documents(this.app_id).subscribe(data => {
-      this.documents = data.results;
+      if(data.count === 0){
+        this.showDocGrid = false;
+      }
+      else{
+        this.documents = data.results;
+        this.showDocGrid = true;
+      }
     });
   }
   getOldCases(){
@@ -187,7 +192,6 @@ export class OldCaseMasterComponent implements OnInit {
       else{
         this.showData = true;
         this.old_cases = data.results;
-        console.log(data);
       }
     })
   }

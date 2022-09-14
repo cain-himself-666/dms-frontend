@@ -12,7 +12,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink" style="cursor: pointer;">
                         <li *ngIf="username !== 'admin'"><a class="dropdown-item" href="/profile">My Profile</a></li>
                         <hr *ngIf="username !== 'admin'">
-                        <li><a class="dropdown-item" (click)="onLogout()">Logout</a></li>
+                        <li><a href="/" class="dropdown-item" (click)="onLogout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>

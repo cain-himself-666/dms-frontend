@@ -14,6 +14,8 @@ import { DesignationAllocationComponent } from './accounts/designation-allocatio
 import { OldCaseMasterComponent } from './masters/old-case-master/old-case-master.component';
 import { DutyAllocationComponent } from './accounts/duty-allocation/duty-allocation.component';
 import { ProfileComponent } from './public/profile/profile.component';
+import { ApproveCasesComponent } from './accounts/approve-cases/approve-cases.component';
+import { SearchComponent } from './public/search/search.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "login" },
@@ -28,6 +30,8 @@ const routes: Routes = [
   { path: "duty-allocation", component: DutyAllocationComponent},
   { path: "old-case", component: OldCaseMasterComponent},
   { path: "profile", component: ProfileComponent},
+  { path: "approve-cases", component: ApproveCasesComponent},
+  { path: "search", component: SearchComponent},
   { path: "**", component: PagenotfoundComponent}
 ];
 

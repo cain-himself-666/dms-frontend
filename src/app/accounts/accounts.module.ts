@@ -7,19 +7,23 @@ import { SharedModule } from '../shared/shared.module';
 import { DesignationAllocationComponent } from './designation-allocation/designation-allocation.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { DutyAllocationComponent } from './duty-allocation/duty-allocation.component';
+import { ApproveCasesComponent } from './approve-cases/approve-cases.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
     DesignationAllocationComponent,
-    DutyAllocationComponent
+    DutyAllocationComponent,
+    ApproveCasesComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     SharedModule,
     AutocompleteLibModule,
+    DataTablesModule,
   ]
 })
 export class AccountsModule { }

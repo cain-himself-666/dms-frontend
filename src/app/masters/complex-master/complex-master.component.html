@@ -2,7 +2,7 @@
     <app-sidebar></app-sidebar>
     <div class="d-block w-100">
         <app-header></app-header>
-        <div class="mt-2 px-5"> 
+        <div class="mt-2"> 
             <div class="text-center mb-2 mt-4">
                 <h2>Complex Master</h2>
             </div>
@@ -37,7 +37,7 @@
                     </table>
                 </div>
             </div>
-            <div class="update-page" *ngIf="showUpdate">
+            <div class="update-page px-5" *ngIf="showUpdate">
                 <form #complex="ngForm" (ngSubmit)="onSubmitComplex(complex.value)">
                     <div class="row mt-5">
                         <div class="col-md-12">

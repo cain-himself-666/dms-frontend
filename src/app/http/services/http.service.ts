@@ -15,6 +15,9 @@ export class HttpService {
   logout(){
     return this.http.post(`${URL}/api/auth/logout/`,{});
   }
+  changePassword(fd:any){
+    return this.http.patch(`${URL}/api/user/standalone/reg/${fd.get('id')}`, fd);
+  }
   case_entry(fd:any){
     return this.http.post<any>(`${URL}/api/old_case_master`, fd);
   }
@@ -81,8 +84,11 @@ export class HttpService {
   get_user(id: string){
     return this.http.get<any>(`${URL}/api/user/reg/${id}`);
   }
+  update_profile(fd:any){
+    return this.http.patch(`${URL}/api/user/profile/${fd.get('profile_id')}`,fd);
+  }
   update_user(fd:any){
-    return this.http.patch(`${URL}/api/user/reg/${fd.get('id')}`,fd);
+    return this.http.patch(`${URL}/api/user/standalone/reg/${fd.get('id')}`, { email: fd.get('email'), password: fd.get('password'), password2: fd.get('password2'), group: fd.get('group')});
   }
   allocate_designation(fd:any){
     return this.http.post(`${URL}/api/designation/allocation`,fd);
@@ -110,5 +116,8 @@ export class HttpService {
   }
   update_designation_isDelete(fd:any){
     return this.http.patch(`${URL}/api/designation/${fd.get('id')}`,fd);
+  }
+  search(query:string){
+    return this.http.get<any>(`${URL}/api/old_case_master?search_text=${query}`)
   }
 }

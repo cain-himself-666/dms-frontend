@@ -193,7 +193,7 @@
                                 <tr *ngFor="let d of documents; let i=index">
                                     <td class="text-center" width="7%">{{i+1}}</td>
                                     <td>{{d.related_type.name}}</td>
-                                    <td><a href="{{d.document_url}}" target="_blank">Test.pdf</a></td>
+                                    <td><a href="{{d.document_url}}" target="_blank">View</a></td>
                                     <td class="text-center" width="5%"><i class="bi bi-x-circle" style="color: red; font-size: 21px; cursor:pointer" (click)="onDeleteDocument(d.id)"></i></td>
                                 </tr>
                             </tbody>
