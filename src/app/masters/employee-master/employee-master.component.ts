@@ -98,7 +98,6 @@ export class EmployeeMasterComponent implements OnInit {
     this.showError = false;
     this.http.get_user(id).subscribe(data => {
       this.id = data.id;
-      // console.log(data);
       this.profile_id = data.related_profile.id;
       this.showForm = !this.showForm;
       this.e_name = data.related_profile.employee_name;
@@ -113,7 +112,12 @@ export class EmployeeMasterComponent implements OnInit {
       this.e_username = data.username;
       this.e_type = data.related_profile.employee_type;
       this.e_gender = data.related_profile.employee_gender;
-      this.imgSrc = data.related_profile.employee_photo;
+      if(data.related_profile.employee_photo === null){
+        this.imgSrc = 'assets/images/dummy.jpeg';
+      }
+      else{
+        this.imgSrc = data.related_profile.employee_photo;
+      }
     })
   }
   onHideForm(){

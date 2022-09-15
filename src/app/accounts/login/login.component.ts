@@ -23,7 +23,13 @@ export class LoginComponent implements OnInit {
       this.local_storage.saveUser(JSON.stringify(data.user));
       this.route.navigate(['/dashboard']);
     }, err => {
-      console.log(err);
+      if(err.error.non_field_errors){
+        alert('User Credentials Invalid !! Please Try Again');
+      }
+      else{
+        alert('Login Failed !! Please try again after sometime');
+      }
+      window.location.reload();
     })
   }
 }

@@ -25,6 +25,8 @@ export class ApproveCasesComponent implements OnInit {
   a_r_name: string = '';
   p_counsels: string = '';
   r_counsels: string = '';
+  remarks: string = '';
+  approve: boolean = false;
   documents: any = [];
   constructor(private http: HttpService) { }
 
@@ -58,8 +60,17 @@ export class ApproveCasesComponent implements OnInit {
     this.showDetails = !this.showDetails;
     this.showDocuments = true;
   }
+  onApprove(event:any){
+    if(event.target.checked){
+      this.approve = true;
+    }
+    else{
+      this.approve = false;
+    }
+  }
   onHideDetails(){
     this.showDetails = !this.showDetails;
+    this.remarks = '';
     this.onGetCases();
   }
   onGetCases(){

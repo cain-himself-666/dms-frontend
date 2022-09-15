@@ -4,9 +4,31 @@
         <app-header></app-header>
         <form #query="ngForm" (ngSubmit)="onSearch(query.value)">
             <div class="input-group mt-5 mb-3 px-5">
-                <input type="text" class="form-control" placeholder="Enter search parameters ...." name="query" ngModel query="ngModel" required>
+                <input type="text" class="form-control" placeholder="Enter search parameters ...." name="query" [(ngModel)]="search" query="ngModel" required>
                 <button class="btn btn-primary" id="button-addon2"><i class="bi bi-search mx-2"></i>Search</button>
             </div>
         </form>
+        <div class="contents mt-5 px-5">
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th class="col text-center">S.No.</th>
+                        <th class="col">Case Number</th>
+                        <th class="col">Parties</th>
+                        <th class="col">Judge</th>
+                        <th class="col">Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" width="5%">1</td>
+                        <td width="17%">WPC/2/2022</td>
+                        <td>Abcd v/s Defg</td>
+                        <td>Mr. Justice Abcd</td>
+                        <td class="text-center" width="7%">View</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

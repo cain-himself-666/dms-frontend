@@ -15,12 +15,6 @@
                     <div class="col-md-4">
                         <img src="{{ imgSrc }}" width="160" height="160">
                     </div>
-                    <!-- <div class="col-md-8">
-                        <label>Logs</label><br>
-                        <label>Login at 10:00 AM</label><br>
-                        <label>Login at 10:00 AM</label><br>
-                        <label>Login at 10:00 AM</label>
-                    </div> -->
                 </div>
                 <div class="row mt-5">
                     <div class="col-md-4">
@@ -58,23 +52,33 @@
                 </div>
             </div>
             <div class="password mt-5" [hidden]="showChangePassword">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="form-label">Enter Current Password</label>
-                        <input type="text" class="form-control">
+                <form #pass="ngForm" (ngSubmit)="onChangePassword(pass.value)">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" [(ngModel)]="emp_uname" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Enter New Password</label>
+                            <input type="text" class="form-control" name="password" [(ngModel)]="pass1" #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}">
+                            <div *ngIf="password.touched">
+                                <small class="text-danger" *ngIf="password.errors?.required">Password Required</small>
+                                <small class="text-danger" *ngIf="password.errors?.pattern">Password is Required (Minimum Length: 8 characters with atleast one capital alphabet letter (A-Z), one small alphabet letter (a-z), one number (0-9) and one sepcial character (.,?/!@#$%^&*))</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="text" class="form-control" name="password2" [(ngModel)]="pass2" #password2="ngModel" required>
+                            <small class="text-danger" *ngIf="password2.value !== password.value">Password is did not match</small>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Enter New Password</label>
-                        <input type="text" class="form-control">
+                    <div class="alert alert-success mt-4 mb-4" *ngIf="showPassUpdate">
+                        Password Updated Successfully !!!
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Confirm New Password</label>
-                        <input type="text" class="form-control">
+                    <div class="mt-4 mb-5 text-end">
+                        <button class="btn btn-primary">Submit</button>
                     </div>
-                </div>
-                <div class="mt-4 mb-5 text-end">
-                    <button class="btn btn-primary">Submit</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

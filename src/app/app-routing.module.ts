@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './accounts/login/login.component';
-import { RegistrationComponent } from './accounts/registration/registration.component';
 import { DashboardComponent } from './public/dashboard/dashboard.component';
 import { PagenotfoundComponent } from './shared/pagenotfound/pagenotfound.component';
 import { EmployeeMasterComponent } from './masters/employee-master/employee-master.component';
@@ -19,19 +18,18 @@ import { SearchComponent } from './public/search/search.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "login" },
-  { path: "login", component: LoginComponent},
-  { path: "dashboard", component: DashboardComponent},
-  { path: "registration", component: RegistrationComponent},
-  { path: "employee", component: EmployeeMasterComponent},
-  { path: "department", component: DepartmentMasterComponent},
-  { path: "designation", component: DesignationMasterComponent},
-  { path: "complex", component: ComplexMasterComponent},
-  { path: "designation-allocation", component: DesignationAllocationComponent},
-  { path: "duty-allocation", component: DutyAllocationComponent},
-  { path: "old-case", component: OldCaseMasterComponent},
-  { path: "profile", component: ProfileComponent},
-  { path: "approve-cases", component: ApproveCasesComponent},
-  { path: "search", component: SearchComponent},
+  { path: "login", component: LoginComponent, canActivate: [AuthGuard]},
+  { path: "dashboard", component: DashboardComponent, canActivate: [RedirectGuard]},
+  { path: "employee", component: EmployeeMasterComponent, canActivate: [RedirectGuard]},
+  { path: "department", component: DepartmentMasterComponent, canActivate: [RedirectGuard]},
+  { path: "designation", component: DesignationMasterComponent, canActivate: [RedirectGuard]},
+  { path: "complex", component: ComplexMasterComponent, canActivate: [RedirectGuard]},
+  { path: "designation-allocation", component: DesignationAllocationComponent, canActivate: [RedirectGuard]},
+  { path: "duty-allocation", component: DutyAllocationComponent, canActivate: [RedirectGuard]},
+  { path: "old-case", component: OldCaseMasterComponent, canActivate: [RedirectGuard]},
+  { path: "profile", component: ProfileComponent, canActivate: [RedirectGuard]},
+  { path: "approve-cases", component: ApproveCasesComponent, canActivate: [RedirectGuard]},
+  { path: "search", component: SearchComponent, canActivate: [RedirectGuard]},
   { path: "**", component: PagenotfoundComponent}
 ];
 

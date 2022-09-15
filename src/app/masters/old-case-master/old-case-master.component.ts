@@ -13,6 +13,8 @@ export class OldCaseMasterComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
   old_cases: any = [];
+  additional_petitioner:Array<string> = [];
+  additional_respondent:Array<string> = [];
   petitioner_counsels:Array<string> = [];
   respondent_counsels:Array<string> = [];
   documents: any = [];
@@ -85,6 +87,7 @@ export class OldCaseMasterComponent implements OnInit {
     this.showAddSuccess = false;
     this.showUpdateSuccess = false;
     this.getDocuments();
+    document.getElementById('save')?.removeAttribute('disabled');
   }
   onDeleteDocument(id:string){
     this.http.delete_document(id).subscribe(data => {
@@ -105,6 +108,20 @@ export class OldCaseMasterComponent implements OnInit {
   onDeleteResCounsel(counsel_name: string){
     this.respondent_counsels.splice(this.respondent_counsels.findIndex((item: string) => item === counsel_name),1);
   }
+  onAddAddnPetitioner(){
+    this.additional_petitioner.push(this.a_p_name);
+    this.a_p_name = '';
+  }
+  onAddAddnRespondent(){
+    this.additional_respondent.push(this.a_r_name);
+    this.a_r_name = '';
+  }
+  onDeleteAddnPetitioner(addn_pet_name: string){
+    this.additional_petitioner.splice(this.additional_petitioner.findIndex((item: string) => item === addn_pet_name),1);
+  }
+  onDeleteAddnRespondent(addn_res_name: string){
+    this.additional_respondent.splice(this.additional_respondent.findIndex((item: string) => item === addn_res_name),1);
+  }
   onAddJudges(){
     this.judges.push(this.judge_name);
     this.judge_name = '';
@@ -113,7 +130,14 @@ export class OldCaseMasterComponent implements OnInit {
     this.judges.splice(this.judges.findIndex((item: string) => item === judge_name),1);
   }
   onFileUpload(event:any){
-    this.doc = event.target.files[0];
+    let fileSize =  event.target.files[0].size/1000000;
+    if(fileSize > 200){
+      alert(`File Size Exceeds (Max File Size Accepted: 200 MB)`);
+      this.file_upload = '';
+    }
+    else{
+      this.doc = event.target.files[0];
+    }
   }
   onAddStep1(data:any){
     if(this.petitioner_counsels.length === 0 || this.respondent_counsels.length === 0){
@@ -131,6 +155,7 @@ export class OldCaseMasterComponent implements OnInit {
       let case_id: any = this.app_id
       var petitioner_counsel = this.petitioner_counsels.toString().replace(',','|');
       var respondent_counsel = this.respondent_counsels.toString().replace(',','|');
+      var additional_respondent = this.additional_respondent.toString().replace(',','|');
       let fd = new FormData();
       let init_year: any = this.datePipe.transform(data.reg_date, 'YYYY');
       fd.append('case_no', data.case_no);
@@ -157,21 +182,29 @@ export class OldCaseMasterComponent implements OnInit {
         this.http.update_case(fd, case_id).subscribe(data => {
           this.showUpdateSuccess = true;
           document.getElementById('save')?.setAttribute('disabled','');
-        })
+        });
       }
     }
   }
   onAddStep2(doc_type:string){
-    let fd = new FormData();
-    fd.append('case_id', this.app_id.toString());
-    fd.append('type_id', doc_type);
-    fd.append('document_url', this.doc);
-    this.http.add_document(fd).subscribe(data => {
-      this.showDocGrid = true;
-      this.getDocuments();
-      this.doc_type_field = '0';
-      this.file_upload = '';
-    })
+    if(doc_type === '0'){
+      alert('Please select the document type');
+    }
+    else if(!this.doc){
+      alert('Please select the file to be uploaded');
+    }
+    else{
+      let fd = new FormData();
+      fd.append('case_id', this.app_id.toString());
+      fd.append('type_id', doc_type);
+      fd.append('document_url', this.doc);
+      this.http.add_document(fd).subscribe(data => {
+        this.showDocGrid = true;
+        this.getDocuments();
+        this.doc_type_field = '0';
+        this.file_upload = '';
+      })
+    }
   }
   getDocuments(){
     this.http.get_documents(this.app_id).subscribe(data => {

@@ -14,10 +14,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
   onLogout(){
-    const token:any = this.local_storage.getToken();
     this.http.logout().subscribe(data => {
-      this.route.navigate(['/']);
       this.local_storage.clearSession();
+      window.location.href="/login"
     })
   }
 }
