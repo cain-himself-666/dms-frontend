@@ -38,15 +38,16 @@
                 </div>
             </div>
             <div class="form-view px-5" *ngIf="showForm">
-                <form #dept="ngForm" (ngSubmit)="onSubmitDept(dept.value, complex.value)">
+                <form #dept="ngForm" (ngSubmit)="onSubmitDept(dept, complex.value)">
                     <div class="row mt-5">
                         <div class="col-md-6">
-                            <label class="form-label">Department Name</label>
-                            <input type="text" class="form-control" name="dept_name" [(ngModel)]="d_name" #dept_name="ngModel" required>
+                            <label class="form-label">Department Name<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="dept_name" name="dept_name" [(ngModel)]="d_name" #dept_name="ngModel" required>
+                            <small class="text-danger" *ngIf="dept_name.touched && dept_name.invalid">Please enter department name.</small>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Department Complex</label>
-                            <select class="form-select" #complex [(ngModel)]="complex_name" name="complex">
+                            <label class="form-label">Department Complex<span class="text-danger">*</span></label>
+                            <select class="form-select" #complex="ngModel" id="complex_field" [(ngModel)]="complex_name" name="complex" required>
                                 <option value="0">----Select Complex----</option>
                                 <option *ngFor="let c of complexes" value="{{c.id}}">{{c.complex_name}}</option>
                             </select>
@@ -55,7 +56,7 @@
                     <div class="row mt-4">
                         <div class="col-md-12">
                             <label class="form-label">Department Description</label>
-                            <textarea class="form-control" cols="30" rows="5" name="dept_descp" [(ngModel)]="d_descp" #dept_descp="ngModel" required></textarea>
+                            <textarea class="form-control" cols="30" rows="5" name="dept_descp" [(ngModel)]="d_descp" #dept_descp="ngModel"></textarea>
                         </div>
                     </div>
                     <div class="alert alert-success mt-4 mb-4" *ngIf="showAddSuccess">

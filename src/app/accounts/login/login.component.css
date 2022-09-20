@@ -25,6 +25,10 @@
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }
+#username.ng-touched.ng-invalid,
+#password.ng-touched.ng-invalid{
+    border-color: red;
+}
 @media(max-width: 767px){
     .title{
         display: block;

@@ -41,17 +41,25 @@ export class DesignationAllocationComponent implements OnInit {
   onSearchUser(id:string){
     this.id = id;
     this.http.get_user(id).subscribe(data => {
-      this.emp_id = data.related_profile[0].employee_id;
-      this.emp_type = data.related_profile[0].employee_type;
-      this.emp_name = data.related_profile[0].employee_name;
+      this.emp_id = data.related_profile.employee_id;
+      this.emp_type = data.related_profile.employee_type;
+      this.emp_name = data.related_profile.employee_name;
     })
   }
   onAllocateDesignation(desg:string){
-    let fd = new FormData();
-    fd.append('employee_id', this.id);
-    fd.append('designation_id', desg);
-    this.http.allocate_designation(fd).subscribe(data => {
-      this.showSuccess = true;
-    })
+    if(!this.searchData){
+      alert('Please search for an employee');
+    }
+    else if(desg === '0'){
+      alert('Please select a designation for the employee');
+    }
+    else{
+      let fd = new FormData();
+      fd.append('employee_id', this.id);
+      fd.append('designation_id', desg);
+      this.http.allocate_designation(fd).subscribe(data => {
+        this.showSuccess = true;
+      })
+    }
   }
 }

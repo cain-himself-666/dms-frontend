@@ -27,6 +27,15 @@ export class HttpService {
   document_type(){
     return this.http.get<any>(`${URL}/api/document_type`);
   }
+  add_document_type(fd:any){
+    return this.http.post(`${URL}/api/document_type`,fd);
+  }
+  update_document_type(fd:any){
+    return this.http.patch(`${URL}/api/document_type/${fd.get('id')}`,fd);
+  }
+  get_document_type(id:any){
+    return this.http.get<any>(`${URL}/api/document_type/${id}`);
+  }
   add_document(fd:any){
     return this.http.post(`${URL}/api/old_case_document`, fd);
   }
@@ -119,5 +128,14 @@ export class HttpService {
   }
   search(query:string){
     return this.http.get<any>(`${URL}/api/old_case_master?search_text=${query}`)
+  }
+  approve_case(fd:any){
+    return this.http.patch(`${URL}/api/old_case_master/${fd.get('id')}`, { approval_remarks: fd.get('remarks'), is_approved: fd.get('is_approved')});
+  }
+  get_case_types(){
+    return this.http.get<any>(`${URL}/api/cis/case_type`);
+  }
+  get_case_result(){
+    return this.http.get<any>(`${URL}/api/cis/case_type`);
   }
 }

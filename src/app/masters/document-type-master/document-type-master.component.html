@@ -1,0 +1,54 @@
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="d-block w-100">
+        <app-header></app-header>
+        <div class="title mt-4 text-center">
+            <h2>Document Type Master</h2>
+        </div>
+        <div class="grid-view mt-4 px-5" *ngIf="!showForm">
+            <div class="text-end mt-4 mb-4">
+                <button class="btn btn-primary" (click)="onShowEntryForm()">+ Add Document Type</button>
+            </div>
+            <div class="error mt-3 text-center" *ngIf="!showGrid">
+                <h4>No Document Types Found !!</h4>
+            </div>
+            <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions" *ngIf="showGrid">
+                <thead>
+                    <tr>
+                        <th class="col">S.No.</th>
+                        <th class="col">Document Type</th>
+                        <th class="col">Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let d of doc_types; let i=index">
+                        <td width="5%" class="text-center">{{i+1}}</td>
+                        <td>{{d.name}}</td>
+                        <td class="text-center" width="7%"><a class="button" (click)="onShowForm(d.id)">Edit</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form px-5" *ngIf="showForm">
+            <form #doc="ngForm" (ngSubmit)="onAddDocumentType(doc)">
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <label class="form-label">Document Type<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="doc_type" name="doc_type" [(ngModel)]="d_type" #doc_type="ngModel" required>
+                        <small class="text-danger" *ngIf="doc_type.touched && doc_type.invalid">Please enter document type name</small>
+                    </div>
+                </div>
+                <div class="alert alert-success mt-4 mb4" *ngIf="showDocSuccess">
+                    Document Type Added Successfully !!
+                </div>
+                <div class="alert alert-success mt-4 mb4" *ngIf="showDocUpdate">
+                    Document Type Updated Successfully !!
+                </div>
+                <div class="text-end mt-4 mb-5">
+                    <button class="btn btn-primary mx-3" (click)="onHideForm()">Go Back</button>
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

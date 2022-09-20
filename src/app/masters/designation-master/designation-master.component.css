@@ -11,3 +11,6 @@
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }
+#desg_name.ng-touched.ng-invalid{
+    border-color: red;
+}

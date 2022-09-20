@@ -15,6 +15,8 @@ import { DutyAllocationComponent } from './accounts/duty-allocation/duty-allocat
 import { ProfileComponent } from './public/profile/profile.component';
 import { ApproveCasesComponent } from './accounts/approve-cases/approve-cases.component';
 import { SearchComponent } from './public/search/search.component';
+import { DocumentTypeMasterComponent } from './masters/document-type-master/document-type-master.component';
+import { NewCaseMasterComponent } from './masters/new-case-master/new-case-master.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "login" },
@@ -30,6 +32,8 @@ const routes: Routes = [
   { path: "profile", component: ProfileComponent, canActivate: [RedirectGuard]},
   { path: "approve-cases", component: ApproveCasesComponent, canActivate: [RedirectGuard]},
   { path: "search", component: SearchComponent, canActivate: [RedirectGuard]},
+  { path: "document", component: DocumentTypeMasterComponent, canActivate: [RedirectGuard]},
+  { path: "new-case", component: NewCaseMasterComponent},
   { path: "**", component: PagenotfoundComponent}
 ];
 

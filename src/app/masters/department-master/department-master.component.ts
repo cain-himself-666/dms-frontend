@@ -33,25 +33,35 @@ export class DepartmentMasterComponent implements OnInit {
     this.getDepartment();
   }
   onSubmitDept(data:any, complex_id:string){
-    let fd = new FormData();
-    if(!this.d_id){
-      fd.append('department_name', data.dept_name);
-      fd.append('department_description', data.dept_descp);
-      fd.append('department_complex', complex_id);
-      this.http.add_department(fd).subscribe(data => {
-        this.showAddSuccess = true;
-        this.showUpdateSuccess = false;
-      })
+    if(!data.valid){
+      data.control.markAllAsTouched();
     }
     else{
-      fd.append('department_name', data.dept_name);
-      fd.append('department_description', data.dept_descp);
-      fd.append('department_complex', complex_id);
-      fd.append('id', this.d_id);
-      this.http.update_department(fd).subscribe(data => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = true;
-      })
+      if(data.value.complex === '0'){
+        alert('Please select a complex')
+      }
+      else{
+        let fd = new FormData();
+        if(!this.d_id){
+          fd.append('department_name', data.value.dept_name);
+          fd.append('department_description', data.value.dept_descp);
+          fd.append('department_complex', data.value.complex);
+          this.http.add_department(fd).subscribe(data => {
+            this.showAddSuccess = true;
+            this.showUpdateSuccess = false;
+          })
+        }
+        else{
+          fd.append('department_name', data.value.dept_name);
+          fd.append('department_description', data.value.dept_descp);
+          fd.append('department_complex', data.value.complex);
+          fd.append('id', this.d_id);
+          this.http.update_department(fd).subscribe(data => {
+            this.showAddSuccess = false;
+            this.showUpdateSuccess = true;
+          })
+        }
+      }
     }
   }
   onShowForm(id: number){

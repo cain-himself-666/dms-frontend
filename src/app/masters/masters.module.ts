@@ -9,6 +9,8 @@ import { ComplexMasterComponent } from './complex-master/complex-master.componen
 import { DataTablesModule } from 'angular-datatables';
 import { OldCaseMasterComponent } from './old-case-master/old-case-master.component';
 import { DatePipe } from '@angular/common';
+import { DocumentTypeMasterComponent } from './document-type-master/document-type-master.component';
+import { NewCaseMasterComponent } from './new-case-master/new-case-master.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { DatePipe } from '@angular/common';
     DepartmentMasterComponent,
     DesignationMasterComponent,
     ComplexMasterComponent,
-    OldCaseMasterComponent
+    OldCaseMasterComponent,
+    DocumentTypeMasterComponent,
+    NewCaseMasterComponent
   ],
   imports: [
     CommonModule,

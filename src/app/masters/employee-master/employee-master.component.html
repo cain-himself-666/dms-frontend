@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="form-view mt-5 px-5" *ngIf="showForm">
-                <form #reg="ngForm" (ngSubmit)="onRegistration(reg.value, gender.value, bgroup.value, empType.value, group.value)">
+                <form #reg="ngForm" (ngSubmit)="onRegistration(reg)">
                     <div class="form-details" [hidden]="!showDetails">
                         <div class="image text-center mb-2">
                             <img src="{{ imgSrc }}" class="mb-2" style="height: 140px; width: 140px; border-radius: 20px;" id="img"/><br>
@@ -52,12 +52,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="form-label">Name</label>
-                                <input type="text" name="name" class="form-control" name="name" [(ngModel)]="e_name" #name="ngModel" required/>
+                                <input type="text" name="name" id="name" class="form-control" name="name" [(ngModel)]="e_name" #name="ngModel" required/>
                                 <small class="text-danger" *ngIf="name.invalid && name.touched">Name Required</small>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Contact Number</label>
-                                <input type="text" name="contact" maxLength="10" pattern="\d{10}" class="form-control" name="contact" [(ngModel)]="e_contact" #contact="ngModel" required/>
+                                <input type="text" name="contact" maxLength="10" id="contact" pattern="\d{10}" class="form-control" name="contact" [(ngModel)]="e_contact" #contact="ngModel" required/>
                                 <div *ngIf="contact.touched">
                                     <small class="text-danger" *ngIf="contact.errors?.required">Contact Number Required (Max Length: 10 digits)</small>
                                     <small class="text-danger" *ngIf="contact.errors?.pattern">Invalid Contact Number</small>
@@ -65,15 +65,14 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" name="dob" [(ngModel)]="e_dob" #dob="ngModel" required/>
+                                <input type="date" class="form-control" id="dob" name="dob" [(ngModel)]="e_dob" #dob="ngModel" required/>
                                 <small class="text-danger" *ngIf="dob.invalid && dob.touched">Date of Birth is required</small>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-4">
                             <label for="exampleDatepicker1" class="form-label">Gender</label>
-                            <select class="form-select" #gender name="gender" [(ngModel)]="e_gender">
-                                    <option value="N/A">----Select Gender----</option>
+                            <select class="form-select" #gender="ngModel" name="gender" [(ngModel)]="e_gender" required>
                                     <option name="gender" value="Male">Male</option>
                                     <option name="gender" value="Female">Female</option>
                                     <option name="gender" value="Others">Others</option>
@@ -81,11 +80,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Email ID</label>
-                                <input type="email" name="email" class="form-control" name="email" [(ngModel)]="e_email" #email="ngModel" required/>
+                                <input type="email" name="email" class="form-control" name="email" [(ngModel)]="e_email" #email="ngModel"/>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label" for="form3Example1w">Blood Group</label>
-                                <select class="form-select" name="blood_group" #bgroup name="bgroup" [(ngModel)]="e_bgroup">
+                                <select class="form-select" name="blood_group" #bgroup="ngModel" name="bgroup" [(ngModel)]="e_bgroup" required>
                                     <option value="N/A">Not Known</option>
                                     <option value="A +ve">A +ve</option>
                                     <option value="A -ve">A -ve</option>
@@ -100,7 +99,7 @@
                         </div>
                         <div class="form-outline mb-3 mt-3">
                             <label class="form-label">Corresponding Address</label>
-                            <textarea class="form-control" name="address1" rows="4" cols="50" [(ngModel)]="emp_address1" #address1="ngModel" required></textarea>
+                            <textarea class="form-control" id="address1" name="address1" rows="4" cols="50" [(ngModel)]="emp_address1" #address1="ngModel" required></textarea>
                             <small class="text-danger" *ngIf="address1.invalid && address1.touched">Corresponding Address is required</small>
                         </div>
                         <div class="form-outline mb-3">
@@ -109,19 +108,18 @@
                         </div>
                         <div class="form-outline mb-3">
                             <label class="form-label">Permanent Address</label>
-                            <textarea name="address2" class="form-control"rows="4" cols="50" [(ngModel)]="emp_address2" #address2="ngModel" required></textarea>
+                            <textarea name="address2" id="address2" class="form-control"rows="4" cols="50" [(ngModel)]="emp_address2" #address2="ngModel" required></textarea>
                             <small class="text-danger" *ngIf="address2.invalid && address2.touched">Permanent Address is required</small>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="form-label">Employee ID/Number</label>
-                                <input type="text" class="form-control" name="employee_id" [(ngModel)]="e_id" #employee_id="ngModel" required/>
+                                <input type="text" class="form-control" id="emp_id" name="employee_id" [(ngModel)]="e_id" #employee_id="ngModel" required/>
                                 <small class="text-danger" *ngIf="employee_id.invalid && employee_id.touched">Employee ID is required</small>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Employee Type</label>
-                                <select class="form-select" name="employee_type" #empType [(ngModel)]="e_type">
-                                    <option value="N/A">----Select Employee Type----</option>
+                                <select class="form-select" name="empType" #empType="ngModel" [(ngModel)]="e_type" required>
                                     <option value="Regular">Regular</option>
                                     <option value="Ad-Hoc">Ad-Hoc</option>
                                     <option value="Contractual">Contractual</option>
@@ -130,7 +128,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Role</label>
-                                    <select class="form-select" #group name="group" [(ngModel)]="e_role">
+                                    <select class="form-select" #group="ngModel" name="group" [(ngModel)]="e_role">
                                         <option value="0">----Select Role Type---</option>
                                         <option value="1">Admin</option>
                                         <option value="2">General User</option>
@@ -149,7 +147,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" [(ngModel)]="password1" #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}"/>
+                            <input type="password" name="password" class="form-control" [(ngModel)]="password1" #password="ngModel" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}"/>
                             <div *ngIf="password.touched">
                                 <small class="text-danger" *ngIf="password.errors?.required">Password Required</small>
                                 <small class="text-danger" *ngIf="password.errors?.pattern">Password is Required (Minimum Length: 8 characters with atleast one capital alphabet letter (A-Z), one small alphabet letter (a-z), one number (0-9) and one sepcial character (.,?/!@#$%^&*))</small>
@@ -180,7 +178,7 @@
                     </div>
                     <div class="mt-4 mb-5 text-end" [hidden]="showDetails">
                         <button class="btn btn-primary mx-3" type="button" (click)="onShowDetails()">Go Back</button>
-                        <button class="btn btn-primary">Submit</button>
+                        <button class="btn btn-primary" [disabled]="password.invalid || conf_password.invalid">Submit</button>
                     </div>
                 </form>
             </div>

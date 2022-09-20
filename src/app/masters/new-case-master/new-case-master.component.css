@@ -73,12 +73,12 @@
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }
-#case_no.ng-touched.ng-invalid,
-#filing_date.ng-touched.ng-invalid,
-#disposal_date.ng-touched.ng-invalid,
-#first_petitioner.ng-touched.ng-invalid,
-#first_respondent.ng-touched.ng-invalid,
-#district.ng-touched.ng-invalid,
-#bench_code.ng-touched.ng-invalid{
+#case_no.ng-invalid.ng-touched,
+#filing_date.ng-invalid.ng-touched,
+#disposal_date.ng-invalid.ng-touched,
+#first_petitioner.ng-invalid.ng-touched,
+#first_respondent.ng-invalid.ng-touched,
+#district.ng-invalid.ng-touched,
+#bench_code.ng-invalid.ng-touched{
     border-color:red
 }

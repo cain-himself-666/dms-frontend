@@ -17,14 +17,16 @@
                                     </div>
                                 </div>
                                 <h2 class="heading fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;">One Stop Solution</h2>
-                                <form #login="ngForm" (ngSubmit)="onLogin(login.value)">
+                                <form #login="ngForm" (ngSubmit)="onLogin(login)">
                                     <div class="form-floating mb-4">
                                         <input type="text" class="form-control" id="username" placeholder="name@example.com" ngModel name="username" #username="ngModel" required>
                                         <label for="username">Username</label>
+                                        <small class="text-danger" *ngIf="username.touched && username.invalid">Please enter username</small>
                                     </div>
                                     <div class="form-floating mb-4">
                                         <input type="password" class="form-control" id="password" placeholder="Password" ngModel name="password" #password="ngModel" required>
                                         <label for="password">Password</label>
+                                        <small class="text-danger" *ngIf="password.touched && password.invalid">Please enter password</small>
                                     </div>
                                     <button class="btn btn-primary w-100 p-2" type="submit">Login</button>
                                 </form>

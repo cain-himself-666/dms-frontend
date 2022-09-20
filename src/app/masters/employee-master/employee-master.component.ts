@@ -83,8 +83,8 @@ export class EmployeeMasterComponent implements OnInit {
     this.emp_address2 = '';
     this.e_role = '0';
     this.e_username = '';
-    this.e_type = 'N/A';
-    this.e_gender = 'N/A';
+    this.e_type = 'Regular';
+    this.e_gender = 'Male';
     this.imgSrc = 'assets/images/dummy.jpeg';
     this.showDetails = true;
     this.showPassword = true;
@@ -148,63 +148,84 @@ export class EmployeeMasterComponent implements OnInit {
     this.showPassUpdate = false;
     this.buffer = 1;
   }
-  onRegistration(data:any, gender: string, bgroup:string, empType: string, group:string){
-    let fd = new FormData();
-    if(this.photo){
-      fd.append('employee_photo', this.photo);
-    }
-    fd.append('employee_id', data.employee_id);
-    fd.append('employee_name', data.name);
-    fd.append('employee_contact', data.contact);
-    fd.append('employee_date_of_birth', data.dob);
-    fd.append('employee_gender', gender);
-    fd.append('employee_blood_group', bgroup);
-    fd.append('employee_type', empType);
-    fd.append('employee_corresponding_address', data.address1);
-    fd.append('email', data.email);
-    fd.append('employee_permanent_address', data.address2);
-    fd.append('group', group);
-    fd.append('username', data.username);
-    if(this.buffer === 0){
-      fd.append('password', data.password);
-      fd.append('password2', data.password);
-      this.http.add_user(fd).subscribe(data => {
-        this.showAddSuccess = true;
-        this.showUpdateSuccess = false;
-        this.showError = false;
-        this.showPassUpdate = false;
-      },err => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = false;
-        this.showError = true;
-        this.showPassUpdate = false;
-      })
-    }
-    else if(this.buffer === 1){
-      fd.append('profile_id', this.profile_id);
-      fd.append('id', this.id);
-      this.http.update_profile(fd).subscribe(data => {
-        this.http.update_user(fd).subscribe(data => {});
-        this.showUpdateSuccess = true;
-        this.showAddSuccess = false;
-        this.showPassUpdate = false;
-        this.showError = false;
-      },err => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = false;
-        this.showError = true;
-        this.showPassUpdate = false;
-      })
+  onRegistration(data:any){
+    if(!data.valid){
+      data.control.markAllAsTouched();
     }
     else{
-      fd.append('id', this.id);
-      fd.append('password', this.password1);
-      fd.append('password2', this.password2);
-      this.http.update_user(fd).subscribe(data => {
-        this.showPassUpdate = true;
-      },err => {
-        console.log(err);
-      })
+      let fd = new FormData();
+      if(this.photo){
+        fd.append('employee_photo', this.photo);
+      }
+      fd.append('employee_id', data.value.employee_id);
+      fd.append('employee_name', data.value.name);
+      fd.append('employee_contact', data.value.contact);
+      fd.append('employee_date_of_birth', data.value.dob);
+      fd.append('employee_gender', data.value.gender);
+      fd.append('employee_blood_group', data.value.bgroup);
+      fd.append('employee_type', data.value.empType);
+      fd.append('employee_corresponding_address', data.value.address1);
+      fd.append('email', data.value.email);
+      fd.append('employee_permanent_address', data.value.address2);
+      fd.append('group', data.value.group);
+      fd.append('username', data.value.username);
+      if(this.buffer === 0){
+        if(data.value.group === '0'){
+          alert('Please select a role for employee');
+        }
+        else if(data.value.password == ''){
+          alert('Please enter password for employee');
+        }
+        else if(data.value.conf_password == ''){
+          alert('Please enter confirm password for employee');
+        }
+        else{
+          fd.append('password', data.value.password);
+          fd.append('password2', data.value.password);
+          this.http.add_user(fd).subscribe(data => {
+            this.showAddSuccess = true;
+            this.showUpdateSuccess = false;
+            this.showError = false;
+            this.showPassUpdate = false;
+          },err => {
+            this.showAddSuccess = false;
+            this.showUpdateSuccess = false;
+            this.showError = true;
+            this.showPassUpdate = false;
+          })
+        }
+      }
+      else if(this.buffer === 1){
+        if(data.value.group === '0'){
+          alert('Please select a role for the employee');
+        }
+        else{
+          fd.append('profile_id', this.profile_id);
+          fd.append('id', this.id);
+          this.http.update_profile(fd).subscribe(data => {
+            this.http.update_user(fd).subscribe(data => {});
+            this.showUpdateSuccess = true;
+            this.showAddSuccess = false;
+            this.showPassUpdate = false;
+            this.showError = false;
+          },err => {
+            this.showAddSuccess = false;
+            this.showUpdateSuccess = false;
+            this.showError = true;
+            this.showPassUpdate = false;
+          })
+        }
+      }
+      else{
+        fd.append('id', this.id);
+        fd.append('password', this.password1);
+        fd.append('password2', this.password2);
+        this.http.update_user(fd).subscribe(data => {
+          this.showPassUpdate = true;
+        },err => {
+          console.log(err);
+        })
+      }
     }
   }
   isDelete(id:string, is_delete: boolean){

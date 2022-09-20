@@ -11,3 +11,12 @@
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }
+#name.ng-touched.ng-invalid,
+#contact.ng-touched.ng-invalid,
+#dob.ng-touched.ng-invalid,
+#address1.ng-touched.ng-invalid,
+#address2.ng-touched.ng-invalid,
+#emp_id.ng-touched.ng-invalid,
+#username.ng-touched.ng-invalid{
+    border-color: red;
+}

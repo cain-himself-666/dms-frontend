@@ -29,23 +29,28 @@ export class ComplexMasterComponent implements OnInit {
     this.getComplex();
   }
   onSubmitComplex(data:any){
-    let fd = new FormData();
-    if(!this.c_id){
-      fd.append('complex_name', data.complex_name);
-      fd.append('complex_description', data.complex_description);
-      this.http.add_complex(fd).subscribe(data => {
-        this.showAddSuccess = true;
-        this.showUpdateSuccess = false;
-      })
+    if(!data.valid){
+      data.control.markAllAsTouched();
     }
     else{
-      fd.append('complex_name', this.c_name);
-      fd.append('complex_description', this.c_descp);
-      fd.append('id', this.c_id);
-      this.http.update_complex(fd).subscribe(data => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = true;
-      })
+      let fd = new FormData();
+      if(!this.c_id){
+        fd.append('complex_name', data.value.complex_name);
+        fd.append('complex_description', data.value.complex_description);
+        this.http.add_complex(fd).subscribe(data => {
+          this.showAddSuccess = true;
+          this.showUpdateSuccess = false;
+        })
+      }
+      else{
+        fd.append('complex_name', this.c_name);
+        fd.append('complex_description', this.c_descp);
+        fd.append('id', this.c_id);
+        this.http.update_complex(fd).subscribe(data => {
+          this.showAddSuccess = false;
+          this.showUpdateSuccess = true;
+        })
+      }
     }
   }
   onShowUpdate(id:number){

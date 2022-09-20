@@ -16,7 +16,7 @@ export class DutyAllocationComponent implements OnInit {
   complex: any = [];
   department: any = [];
   showDept: boolean = false;
-  complex_id: string = '';
+  complex_id: string = '0';
   department_id:string = '';
   showSuccess: boolean = false;
   constructor(private http: HttpService) { }
@@ -45,14 +45,14 @@ export class DutyAllocationComponent implements OnInit {
   onSearchUser(id:string){
     this.id = id;
     this.http.get_user(id).subscribe(data => {
-      this.emp_id = data.related_profile[0].employee_id;
-      this.emp_type = data.related_profile[0].employee_type;
-      this.emp_name = data.related_profile[0].employee_name;
+      this.emp_id = data.related_profile.employee_id;
+      this.emp_type = data.related_profile.employee_type;
+      this.emp_name = data.related_profile.employee_name;
     })
   }
   onGetDepartments(event:any){
     this.complex_id = event.target.value;
-    this.department_id = '';
+    this.department_id = '0';
     this.http.get_corresponding_department(event.target.value).subscribe(data => {
       if(data.count === 0){
         this.showDept = false;
@@ -67,14 +67,27 @@ export class DutyAllocationComponent implements OnInit {
     this.department_id = event.target.value;
   }
   onAllocateDuty(){
-    let fd = new FormData();
-    if(this.department_id){
-      fd.append('department_id', this.complex_id);
+    if(!this.searchData){
+      alert('Please search for an employee')
     }
-    fd.append('complex_id', this.complex_id);
-    fd.append('employee_id', this.id);
-    this.http.allocate_duty(fd).subscribe(data => {
-      this.showSuccess = true
-    })
+    else if(this.complex_id === '0'){
+      alert('Please add a complex');
+    }
+    else{
+      let fd = new FormData();
+      if(this.department_id === '0'){
+        alert('Please select a department to proceed')
+      }
+      else{
+        if(this.department_id){
+          fd.append('department_id', this.department_id);
+        }
+        fd.append('complex_id', this.complex_id);
+        fd.append('employee_id', this.id);
+        this.http.allocate_duty(fd).subscribe(data => {
+          this.showSuccess = true
+        })
+      }
+    }
   }
 }

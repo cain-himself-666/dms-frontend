@@ -12,6 +12,7 @@ export class ApproveCasesComponent implements OnInit {
   showDocuments: boolean = false;
   showDetails: boolean = false;
   showData: boolean = false;
+  case_id: string = '';
   old_cases: any = [];
   case_no: string = '';
   reg_date: string = '';
@@ -26,8 +27,9 @@ export class ApproveCasesComponent implements OnInit {
   p_counsels: string = '';
   r_counsels: string = '';
   remarks: string = '';
-  approve: boolean = false;
+  approve: any = false;
   documents: any = [];
+  showApprove: boolean = false;
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -39,6 +41,8 @@ export class ApproveCasesComponent implements OnInit {
     this.onGetCases();
   }
   onShowDetails(id:string){
+    this.showApprove = false;
+    this.case_id = id;
     this.http.get_old_case(id).subscribe(data => {
       this.case_no = data.case_no || 'N/A';
       this.judge_date = data.disposal_date || 'N/A';
@@ -70,6 +74,7 @@ export class ApproveCasesComponent implements OnInit {
   }
   onHideDetails(){
     this.showDetails = !this.showDetails;
+    this.showApprove = false;
     this.remarks = '';
     this.onGetCases();
   }
@@ -83,5 +88,19 @@ export class ApproveCasesComponent implements OnInit {
         this.showData = true;
       }
     })
+  }
+  onApproveCase(data: any){
+    if(this.approve === false){
+      alert('Please approve the case before proceeding');
+    }
+    else{
+      let fd = new FormData();
+      fd.append('id', this.case_id);
+      fd.append('remarks', data);
+      fd.append('is_approved', this.approve);
+      this.http.approve_case(fd).subscribe(data => {
+          this.showApprove = true;
+      })
+    }
   }
 }

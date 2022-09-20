@@ -1,0 +1,11 @@
+.profile a{
+    color: #579FDD;
+}
+.btn{
+    background-color: #579FDD;
+    border-color: #579FDD;
+}
+.btn:hover{
+    background-color: #7CB8EC;
+    border-color: #7CB8EC;
+}

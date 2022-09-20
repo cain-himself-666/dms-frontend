@@ -38,17 +38,18 @@
                 </div>
             </div>
             <div class="update-page px-5" *ngIf="showUpdate">
-                <form #complex="ngForm" (ngSubmit)="onSubmitComplex(complex.value)">
+                <form #complex="ngForm" (ngSubmit)="onSubmitComplex(complex)">
                     <div class="row mt-5">
                         <div class="col-md-12">
-                            <label class="form-label">Complex Name</label>
-                            <input type="text" class="form-control" name="complex_name" [(ngModel)]="c_name" #complex_name="ngModel" required>
+                            <label class="form-label">Complex Name<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="complex_name" name="complex_name" [(ngModel)]="c_name" #complex_name="ngModel" required>
+                            <small class="text-danger" *ngIf="complex_name.touched && complex_name.invalid">Please enter complex name</small>
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-12">
                             <label class="form-label">Complex Description</label>
-                            <textarea class="form-control" cols="30" rows="5" name="complex_description" [(ngModel)]="c_descp" #complex_description="ngModel" required></textarea>
+                            <textarea class="form-control" cols="30" rows="5" name="complex_description" [(ngModel)]="c_descp" #complex_description="ngModel"></textarea>
                         </div>
                     </div>
                     <div class="alert alert-success mt-4 mb-4" *ngIf="showAddSuccess">

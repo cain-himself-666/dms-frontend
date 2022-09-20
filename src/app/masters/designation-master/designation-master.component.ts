@@ -28,26 +28,36 @@ export class DesignationMasterComponent implements OnInit {
     }
     this.getDesignation();
   }
-  onSubmitDesg(data:any, group:string){
-    let fd = new FormData();
-    if(!this.d_id){
-      fd.append('designation_name', data.desg_name);
-      fd.append('designation_description', data.desg_descp);
-      fd.append('designation_group', group);
-      this.http.add_designation(fd).subscribe(data => {
-        this.showAddSuccess = true;
-        this.showUpdateSuccess = false;
-      })
+  onSubmitDesg(data:any){
+    if(!data.valid){
+      data.control.markAllAsTouched();
     }
     else{
-      fd.append('designation_name', data.desg_name);
-      fd.append('designation_description', data.desg_descp);
-      fd.append('designation_group', group);
-      fd.append('id', this.d_id);
-      this.http.update_designation(fd).subscribe(data => {
-        this.showAddSuccess = false;
-        this.showUpdateSuccess = true;
-      })
+      if (data.value.group === '0'){
+        alert('Please select the group to register designation');
+      }
+      else{
+        let fd = new FormData();
+        if(!this.d_id){
+          fd.append('designation_name', data.value.desg_name);
+          fd.append('designation_description', data.value.desg_descp);
+          fd.append('designation_group', data.value.group);
+          this.http.add_designation(fd).subscribe(data => {
+            this.showAddSuccess = true;
+            this.showUpdateSuccess = false;
+          })
+        }
+        else{
+          fd.append('designation_name', data.value.desg_name);
+          fd.append('designation_description', data.value.desg_descp);
+          fd.append('designation_group', data.value.group);
+          fd.append('id', this.d_id);
+          this.http.update_designation(fd).subscribe(data => {
+            this.showAddSuccess = false;
+            this.showUpdateSuccess = true;
+          })
+        }
+      }
     }
   }
   onShowEntryForm(){

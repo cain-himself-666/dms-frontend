@@ -215,23 +215,28 @@
                     </table>
                 </div>
             </div>
-            <div class="mt-3">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label class="form-label"><b>Remarks</b></label>
-                        <textarea class="form-control" rows="5" name="remarks" [(ngModel)]="remarks"></textarea>
+            <form (ngSubmit)="onApproveCase(rem.value)">
+                <div class="mt-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label"><b>Remarks</b></label>
+                            <textarea class="form-control" rows="5" name="rem" [(ngModel)]="remarks" #rem="ngModel"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label class="form-label"><b>Approved ?</b></label><input type="checkbox" (click)="onApprove($event)" class="mx-2">  
+                        </div>
                     </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <label class="form-label"><b>Approved ?</b></label><input type="checkbox" (click)="onApprove($event)" class="mx-2">  
-                    </div>
+                <div class="alert alert-success mt-3" *ngIf="showApprove">
+                    Case Approved Successfully
                 </div>
-            </div>
-            <div class="text-end mt-4 mb-5">
-                <button class="btn btn-primary mx-3" type="button" (click)="onHideDetails()">Go Back</button>
-                <button class="btn btn-primary">Submit</button>
-            </div>
+                <div class="text-end mt-4 mb-5">
+                    <button class="btn btn-primary mx-3" type="button" (click)="onHideDetails()">Go Back</button>
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
     </div> 
 </div>
