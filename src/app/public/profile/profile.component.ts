@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalstorageService } from 'src/app/http/services/localstorage.service';
 import { HttpService } from 'src/app/http/services/http.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -24,6 +26,7 @@ export class ProfileComponent implements OnInit {
   user_profile: any;
   group: string = '';
   imgSrc: string = '';
+  notifier = new Subject();
   constructor(private local_storage: LocalstorageService, private http: HttpService) { }
 
   ngOnInit(): void {
@@ -63,7 +66,7 @@ export class ProfileComponent implements OnInit {
     fd.append('group', this.group);
     fd.append('password', data.password);
     fd.append('password2', data.password2);
-    this.http.update_user(fd).subscribe(data => {
+    this.http.update_user(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.showPassUpdate = true;
       this.pass1 = '';
       this.pass2 = '';

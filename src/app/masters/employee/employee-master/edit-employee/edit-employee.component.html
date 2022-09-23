@@ -1,0 +1,111 @@
+<div class="form-view mt-5 px-5">
+    <form #reg="ngForm" (ngSubmit)="onRegistration(reg)">
+        <div class="form-details">
+            <div class="image text-center mb-2">
+                <img src="{{ imgSrc }}" class="mb-2" style="height: 140px; width: 140px; border-radius: 20px;" id="img"/><br>
+                <label for="file" style="color: #579FDD; text-decoration: underline; cursor: pointer;">Change Photo</label>
+                <input type="file" id="file" (input)="onHandleEvent($event)" accept="image/png, image/jpeg, image/jpg" style="display: none" />
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" name="name" [(ngModel)]="e_name" #name="ngModel" required/>
+                    <small class="text-danger" *ngIf="name.invalid && name.touched">Name Required</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Contact Number</label>
+                    <input type="text" name="contact" maxLength="10" id="contact" pattern="\d{10}" class="form-control" name="contact" [(ngModel)]="e_contact" #contact="ngModel" required/>
+                    <div *ngIf="contact.touched">
+                        <small class="text-danger" *ngIf="contact.errors?.required">Contact Number Required (Max Length: 10 digits)</small>
+                        <small class="text-danger" *ngIf="contact.errors?.pattern">Invalid Contact Number</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="dob" name="dob" [(ngModel)]="e_dob" #dob="ngModel" required/>
+                    <small class="text-danger" *ngIf="dob.invalid && dob.touched">Date of Birth is required</small>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                <label for="exampleDatepicker1" class="form-label">Gender</label>
+                <select class="form-select" #gender="ngModel" name="gender" [(ngModel)]="e_gender" required>
+                        <option name="gender" value="Male">Male</option>
+                        <option name="gender" value="Female">Female</option>
+                        <option name="gender" value="Others">Others</option>
+                </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email ID</label>
+                    <input type="email" name="email" class="form-control" name="email" [(ngModel)]="e_email" #email="ngModel"/>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="form3Example1w">Blood Group</label>
+                    <select class="form-select" name="blood_group" #bgroup="ngModel" name="bgroup" [(ngModel)]="e_bgroup" required>
+                        <option value="N/A">Not Known</option>
+                        <option value="A +ve">A +ve</option>
+                        <option value="A -ve">A -ve</option>
+                        <option value="B +ve">B +ve</option>
+                        <option value="B -ve">B -ve</option>
+                        <option value="O +ve">O +ve</option>
+                        <option value="O -ve">O -ve</option>
+                        <option value="AB +ve">AB +ve</option>
+                        <option value="AB -ve">AB -ve</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-outline mb-3 mt-3">
+                <label class="form-label">Corresponding Address</label>
+                <textarea class="form-control" id="address1" name="address1" rows="4" cols="50" [(ngModel)]="emp_address1" #address1="ngModel" required></textarea>
+                <small class="text-danger" *ngIf="address1.invalid && address1.touched">Corresponding Address is required</small>
+            </div>
+            <div class="form-outline mb-3">
+                <input type="checkbox" name="check" (click)="onCheckAddress($event)"/>
+                <label>&nbsp;&nbsp;Same as Corresponding</label> 
+            </div>
+            <div class="form-outline mb-3">
+                <label class="form-label">Permanent Address</label>
+                <textarea name="address2" id="address2" class="form-control"rows="4" cols="50" [(ngModel)]="emp_address2" #address2="ngModel" required></textarea>
+                <small class="text-danger" *ngIf="address2.invalid && address2.touched">Permanent Address is required</small>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Employee ID/Number</label>
+                    <input type="text" class="form-control" id="emp_id" name="employee_id" [(ngModel)]="e_id" #employee_id="ngModel" required/>
+                    <small class="text-danger" *ngIf="employee_id.invalid && employee_id.touched">Employee ID is required</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Employee Type</label>
+                    <select class="form-select" name="empType" #empType="ngModel" [(ngModel)]="e_type" required>
+                        <option value="Regular">Regular</option>
+                        <option value="Ad-Hoc">Ad-Hoc</option>
+                        <option value="Contractual">Contractual</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select" #group="ngModel" name="group" [(ngModel)]="e_role">
+                            <option value="0">----Select Role Type---</option>
+                            <option value="1">Admin</option>
+                            <option value="2">General User</option>
+                            <option value="3">Approver</option>
+                            <option value="4">Data Entry Operator</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-success mt-4 mb-4" *ngIf="showUpdateSuccess">
+            Employee Details Updated Successfully !!
+        </div>
+        <div class="alert alert-danger mt-4 mb-4" *ngIf="showError">
+            Error !!
+        </div>
+        <div class="mt-4 mb-5 text-end">
+            <button class="btn btn-primary mx-2" type="button" (click)="onShowChangePass()">Change Password</button>
+            <button class="btn btn-primary mx-3" type="button" (click)="onHideForm()">Go Back</button>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

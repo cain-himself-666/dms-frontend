@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-approve-cases',
   templateUrl: './approve-cases.component.html',
@@ -30,6 +31,7 @@ export class ApproveCasesComponent implements OnInit {
   approve: any = false;
   documents: any = [];
   showApprove: boolean = false;
+  notifier = new Subject();
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class ApproveCasesComponent implements OnInit {
   onShowDetails(id:string){
     this.showApprove = false;
     this.case_id = id;
-    this.http.get_old_case(id).subscribe(data => {
+    this.http.get_old_case(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.case_no = data.case_no || 'N/A';
       this.judge_date = data.disposal_date || 'N/A';
       this.reg_date = data.registration_date || 'N/A';
@@ -79,7 +81,7 @@ export class ApproveCasesComponent implements OnInit {
     this.onGetCases();
   }
   onGetCases(){
-    this.http.get_old_cases().subscribe(data => {
+    this.http.get_old_cases().pipe(takeUntil(this.notifier)).subscribe(data => {
       if(data.count === 0){
         this.showData = false;
       }
@@ -98,7 +100,7 @@ export class ApproveCasesComponent implements OnInit {
       fd.append('id', this.case_id);
       fd.append('remarks', data);
       fd.append('is_approved', this.approve);
-      this.http.approve_case(fd).subscribe(data => {
+      this.http.approve_case(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
           this.showApprove = true;
       })
     }

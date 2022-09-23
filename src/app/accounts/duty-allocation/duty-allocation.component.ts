@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-duty-allocation',
   templateUrl: './duty-allocation.component.html',
   styleUrls: ['./duty-allocation.component.css']
 })
 export class DutyAllocationComponent implements OnInit {
+  notifier = new Subject();
   emp_type: string = '';
   emp_name: string = '';
   emp_id: string = '';
@@ -22,10 +25,10 @@ export class DutyAllocationComponent implements OnInit {
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
-    this.http.get_complex().subscribe(data => {
+    this.http.get_complex().pipe(takeUntil(this.notifier)).subscribe(data => {
       this.complex = data.results;
     })
-    this.http.get_users().subscribe(data => {
+    this.http.get_users().pipe(takeUntil(this.notifier)).subscribe(data => {
       data.results.forEach((element:any) => {
         this.buffer.push({
           'id': element.id,
@@ -44,7 +47,7 @@ export class DutyAllocationComponent implements OnInit {
   }
   onSearchUser(id:string){
     this.id = id;
-    this.http.get_user(id).subscribe(data => {
+    this.http.get_user(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.emp_id = data.related_profile.employee_id;
       this.emp_type = data.related_profile.employee_type;
       this.emp_name = data.related_profile.employee_name;
@@ -53,7 +56,7 @@ export class DutyAllocationComponent implements OnInit {
   onGetDepartments(event:any){
     this.complex_id = event.target.value;
     this.department_id = '0';
-    this.http.get_corresponding_department(event.target.value).subscribe(data => {
+    this.http.get_corresponding_department(event.target.value).pipe(takeUntil(this.notifier)).subscribe(data => {
       if(data.count === 0){
         this.showDept = false;
       }
@@ -84,7 +87,7 @@ export class DutyAllocationComponent implements OnInit {
         }
         fd.append('complex_id', this.complex_id);
         fd.append('employee_id', this.id);
-        this.http.allocate_duty(fd).subscribe(data => {
+        this.http.allocate_duty(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
           this.showSuccess = true
         })
       }

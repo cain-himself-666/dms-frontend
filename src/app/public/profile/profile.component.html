@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Enter New Password</label>
-                            <input type="text" class="form-control" name="password" [(ngModel)]="pass1" #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}">
+                            <input type="password" class="form-control" name="password" [(ngModel)]="pass1" #password="ngModel" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}">
                             <div *ngIf="password.touched">
                                 <small class="text-danger" *ngIf="password.errors?.required">Password Required</small>
                                 <small class="text-danger" *ngIf="password.errors?.pattern">Password is Required (Minimum Length: 8 characters with atleast one capital alphabet letter (A-Z), one small alphabet letter (a-z), one number (0-9) and one sepcial character (.,?/!@#$%^&*))</small>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Confirm New Password</label>
-                            <input type="text" class="form-control" name="password2" [(ngModel)]="pass2" #password2="ngModel" required>
+                            <input type="password" class="form-control" name="password2" [(ngModel)]="pass2" #password2="ngModel" required>
                             <small class="text-danger" *ngIf="password2.value !== password.value">Password is did not match</small>
                         </div>
                     </div>

@@ -1,0 +1,33 @@
+<div class="grid-view">
+    <div class="text-end mt-3 px-5">
+        <button class="btn btn-primary" type="button" (click)="onViewAddDesg()">+ Add Designation</button>
+    </div>
+    <div class="mt-3 text-center" *ngIf="!showData">
+        <h3>No designations added</h3>
+    </div>
+    <div class="px-5 mt-4" *ngIf="showData">
+        <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions">
+            <thead>
+                <tr class="text-center">
+                    <th class="col" width="5%">S.No.</th>
+                    <th class="col">Name</th>
+                    <th class="col">Description</th>
+                    <th class="col">Group</th>
+                    <th class="col" width="10%">Operations</th>
+                    <th class="col" width="10%">isDeleted</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of designations; let i=index">
+                    <td class="text-center">{{i+1}}</td>
+                    <td>{{d.designation_name}}</td>
+                    <td>{{d.designation_description}}</td>
+                    <td>{{d.designation_group}}</td>
+                    <td class="text-center"><a class="button" (click)="onViewEditDesg(d.id)">Edit</a></td>
+                    <td class="text-center"><input type="checkbox" checked *ngIf="d.designation_isDeleted" (click)="isDelete(d.id, d.designation_isDeleted)">
+                            <input type="checkbox" *ngIf="!d.designation_isDeleted" (click)="isDelete(d.id, d.designation_isDeleted)"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

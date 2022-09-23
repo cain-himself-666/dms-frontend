@@ -1,0 +1,34 @@
+<div class="mt-4 px-5"> 
+    <form #pass="ngForm" (ngSubmit)="onUpdatePassword(pass)">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" id="username" class="form-control" [(ngModel)]="e_username" #username="ngModel" required disabled/>
+                <small class="text-danger" *ngIf="username.invalid && username.touched">Username is Required</small>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" [(ngModel)]="password1" #password="ngModel" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}"/>
+                <div *ngIf="password.touched">
+                    <small class="text-danger" *ngIf="password.errors?.required">Password Required</small>
+                    <small class="text-danger" *ngIf="password.errors?.pattern">Password is Required (Minimum Length: 8 characters with atleast one capital alphabet letter (A-Z), one small alphabet letter (a-z), one number (0-9) and one sepcial character (.,?/!@#$%^&*))</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="conf_password" class="form-control" [(ngModel)]="password2" #conf_password="ngModel"/>
+                <small class="text-danger" *ngIf="conf_password.value !== password.value">Password is did not match</small>
+            </div>
+            <div class="alert alert-success mt-4 mb-4" *ngIf="showPassUpdate">
+                Password Updated Successfully !!
+            </div>
+            <div class="alert alert-danger mt-4 mb-4" *ngIf="showError">
+                Error !! Data already exists
+            </div>
+            <div class="mt-4 mb-5 text-end">
+                <button class="btn btn-primary mx-3" type="button" (click)="onHidePasswordForm()">Go Back</button>
+                <button class="btn btn-primary" [disabled]="(password.invalid || conf_password.invalid) && (password.value === conf_password.value)">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

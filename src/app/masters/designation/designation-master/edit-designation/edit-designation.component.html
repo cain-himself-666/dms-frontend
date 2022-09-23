@@ -1,0 +1,35 @@
+<div class="form-view px-5">
+    <form #desg="ngForm" (ngSubmit)="onUpdate(desg)">
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label class="form-label">Designation Name</label>
+                <input type="text" class="form-control" id="desg_name" name="desg_name" [(ngModel)]="d_name" #desg_name="ngModel" required>
+                <small class="text-danger" *ngIf="desg_name.touched && desg_name.invalid">Please enter designation name</small>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Designation Group</label>
+                <select class="form-select" #group="ngModel" [(ngModel)]="d_group" name="group" required>
+                    <option value="0">----Select Group----</option>
+                    <option value="Group A">Group A</option>
+                    <option value="Group B">Group B</option>
+                    <option value="Group C">Group C</option>
+                    <option value="Group D">Group D</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <label class="form-label">Designation Description</label>
+                <textarea class="form-control" cols="30" rows="5" name="desg_descp" [(ngModel)]="d_descp" #desg_descp="ngModel"></textarea>
+            </div>
+        </div>
+
+        <div class="alert alert-success mt-4 mb-4" *ngIf="showUpdateSuccess">
+            Designation Updated Successfully !!
+        </div>
+        <div class="text-end mt-4 mb-5">
+            <button class="btn btn-primary mx-3" type="button" (click)="onHideForm()">Go Back</button>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

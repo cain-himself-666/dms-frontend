@@ -1,0 +1,24 @@
+<div class="grid-view mt-4 px-5">
+    <div class="text-end mt-4 mb-4">
+        <button class="btn btn-primary" (click)="onViewAddDocType()">+ Add Document Type</button>
+    </div>
+    <div class="error mt-3 text-center" *ngIf="!showGrid">
+        <h4>No Document Types Found !!</h4>
+    </div>
+    <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions" *ngIf="showGrid">
+        <thead>
+            <tr>
+                <th class="col">S.No.</th>
+                <th class="col">Document Type</th>
+                <th class="col">Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of doc_types; let i=index">
+                <td width="5%" class="text-center">{{i+1}}</td>
+                <td>{{d.name}}</td>
+                <td class="text-center" width="7%"><a class="button" (click)="onViewEditDocType(d.id)">Edit</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

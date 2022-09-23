@@ -1,0 +1,18 @@
+<div class="form px-5">
+    <form #doc="ngForm" (ngSubmit)="onUpdate(doc)">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <label class="form-label">Document Type<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="doc_type" name="doc_type" [(ngModel)]="d_name" #doc_type="ngModel" required>
+                <small class="text-danger" *ngIf="doc_type.touched && doc_type.invalid">Please enter document type name</small>
+            </div>
+        </div>
+        <div class="alert alert-success mt-4 mb4" *ngIf="showDocUpdate">
+            Document Type Updated Successfully !!
+        </div>
+        <div class="text-end mt-4 mb-5">
+            <button class="btn btn-primary mx-3" type="button" (click)="onHideForm()">Go Back</button>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

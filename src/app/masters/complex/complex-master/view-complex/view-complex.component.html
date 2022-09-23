@@ -1,0 +1,31 @@
+<div class="grid-page">
+    <div class="text-end mt-3 px-5">
+        <button class="btn btn-primary" type="button" (click)="onViewAddComplex()">+ Add Complex</button>
+    </div>
+    <div class="mt-3 text-center" *ngIf="!showData">
+        <h3>No complex added</h3>
+    </div>
+    <div class="px-5 mt-4" *ngIf="showData">
+        <table class="table table-bordered table-responsive" datatable [dtOptions]="dtOptions">
+            <thead>
+                <tr>
+                    <th class="col" width="5%">S.No.</th>
+                    <th class="col">Name</th>
+                    <th class="col">Description</th>
+                    <th class="col" width="10%">Operations</th>
+                    <th class="col" width="10%">isDeleted</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of complex; let i=index;">
+                    <td class="text-center">{{i+1}}</td>
+                    <td>{{c.complex_name}}</td>
+                    <td>{{c.complex_description}}</td>
+                    <td class="text-center"><a class="button" (click)="onViewEditComplex(c.id)">Edit</a></td>
+                    <td class="text-center"><input type="checkbox" checked *ngIf="c.complex_isDeleted" (click)="isDelete(c.id, c.complex_isDeleted)">
+                                            <input type="checkbox" *ngIf="!c.complex_isDeleted" (click)="isDelete(c.id, c.complex_isDeleted)"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

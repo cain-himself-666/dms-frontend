@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-designation-allocation',
   templateUrl: './designation-allocation.component.html',
@@ -15,13 +17,14 @@ export class DesignationAllocationComponent implements OnInit {
   designations: any = [];
   id:string = '';
   showSuccess: boolean = false;
+  notifier = new Subject();
   constructor(private http: HttpService) { }
 
   ngOnInit(): void {
-    this.http.get_designations().subscribe(data => {
+    this.http.get_designations().pipe(takeUntil(this.notifier)).subscribe(data => {
       this.designations = data.results;
     })
-    this.http.get_users().subscribe(data => {
+    this.http.get_users().pipe(takeUntil(this.notifier)).subscribe(data => {
       data.results.forEach((element:any) => {
         this.buffer.push({
           'id': element.id,
@@ -40,7 +43,7 @@ export class DesignationAllocationComponent implements OnInit {
   }
   onSearchUser(id:string){
     this.id = id;
-    this.http.get_user(id).subscribe(data => {
+    this.http.get_user(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.emp_id = data.related_profile.employee_id;
       this.emp_type = data.related_profile.employee_type;
       this.emp_name = data.related_profile.employee_name;
@@ -57,7 +60,7 @@ export class DesignationAllocationComponent implements OnInit {
       let fd = new FormData();
       fd.append('employee_id', this.id);
       fd.append('designation_id', desg);
-      this.http.allocate_designation(fd).subscribe(data => {
+      this.http.allocate_designation(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
         this.showSuccess = true;
       })
     }

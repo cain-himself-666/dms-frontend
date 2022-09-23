@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';  
 declare var bindStepper: any;
 @Component({
   selector: 'app-old-case-master',
@@ -41,6 +42,7 @@ export class OldCaseMasterComponent implements OnInit {
   id: number = 0;
   showAddSuccess: boolean = false;
   showUpdateSuccess: boolean = false;
+  notifier = new Subject();
   constructor(private http: HttpService, private datePipe: DatePipe) { }
   ngOnInit(): void {
     this.dtOptions = {
@@ -49,7 +51,7 @@ export class OldCaseMasterComponent implements OnInit {
       processing: true,
     }
     bindStepper();
-    this.http.document_type().subscribe(data => {
+    this.http.document_type().pipe(takeUntil(this.notifier)).subscribe(data => {
       this.doc_type = data.results
     })
     this.getOldCases();
@@ -60,7 +62,7 @@ export class OldCaseMasterComponent implements OnInit {
   onShowForm(id:string){
     this.showForm = true;
     this.id = 1;
-    this.http.get_old_case(id).subscribe(data => {
+    this.http.get_old_case(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       console.log(data);
       this.petitioner_counsels = data.petitioner_counsel.split('|');
       this.respondent_counsels = data.respondent_counsel.split('|');
@@ -96,7 +98,7 @@ export class OldCaseMasterComponent implements OnInit {
     document.getElementById('save')?.removeAttribute('disabled');
   }
   onDeleteDocument(id:string){
-    this.http.delete_document(id).subscribe(data => {
+    this.http.delete_document(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.getDocuments();
     });
   }
@@ -210,7 +212,7 @@ export class OldCaseMasterComponent implements OnInit {
         fd.append('additional_respondent', additional_respondent);
         fd.append('judge_name', this.judges.toString().replace(',','|'));
         if(this.id === 0){
-          this.http.case_entry(fd).subscribe(data => {
+          this.http.case_entry(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
             this.app_id = data.id
             document.getElementById('save')?.setAttribute('disabled','');
             this.showAddSuccess = true;
@@ -218,7 +220,7 @@ export class OldCaseMasterComponent implements OnInit {
         }
         else{
           console.log(additional_petitioner);
-          this.http.update_case(fd, case_id).subscribe(data => {
+          this.http.update_case(fd, case_id).pipe(takeUntil(this.notifier)).subscribe(data => {
             this.showUpdateSuccess = true;
             document.getElementById('save')?.setAttribute('disabled','');
           });
@@ -238,7 +240,7 @@ export class OldCaseMasterComponent implements OnInit {
       fd.append('case_id', this.app_id.toString());
       fd.append('type_id', doc_type);
       fd.append('document_url', this.doc);
-      this.http.add_document(fd).subscribe(data => {
+      this.http.add_document(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
         this.showDocGrid = true;
         this.getDocuments();
         this.doc_type_field = '0';
@@ -247,7 +249,7 @@ export class OldCaseMasterComponent implements OnInit {
     }
   }
   getDocuments(){
-    this.http.get_documents(this.app_id).subscribe(data => {
+    this.http.get_documents(this.app_id).pipe(takeUntil(this.notifier)).subscribe(data => {
       if(data.count === 0){
         this.showDocGrid = false;
       }
@@ -258,7 +260,7 @@ export class OldCaseMasterComponent implements OnInit {
     });
   }
   getOldCases(){
-    this.http.get_old_cases().subscribe(data => {
+    this.http.get_old_cases().pipe(takeUntil(this.notifier)).subscribe(data => {
       if(data.count === 0){
         this.showData = false;
       }
