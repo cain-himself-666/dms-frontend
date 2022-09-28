@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
-import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';  
-declare var bindStepper: any;
+import { takeUntil } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+declare var bindStepper: any;  
+
 @Component({
-  selector: 'app-old-case-master',
-  templateUrl: './old-case-master.component.html',
-  styleUrls: ['./old-case-master.component.css']
+  selector: 'app-edit-old-case',
+  templateUrl: './edit-old-case.component.html',
+  styleUrls: ['./edit-old-case.component.css']
 })
-export class OldCaseMasterComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject<any>();
-  old_cases: any = [];
-  additional_petitioner:any = [];
-  additional_respondent:any = [];
+export class EditOldCaseComponent implements OnInit {
+  @Output('hide') onHide: any = new EventEmitter<{status: boolean}>();
+  @Input() oldCases: any;
+  @Input() caseDocuments: any;
+  additional_petitioner:Array<string> = [];
+  additional_respondent:Array<string> = [];
   petitioner_counsels:Array<string> = [];
   respondent_counsels:Array<string> = [];
   documents: any = [];
@@ -23,10 +24,8 @@ export class OldCaseMasterComponent implements OnInit {
   pcounsel_name: string = '';
   rcounsel_name: string = '';
   judge_name:string = '';
-  app_id: number = 0;
+  app_id: string = '';
   doc: any;
-  showData: boolean = false;
-  showForm: boolean = false;
   doc_type_field: string = '0';
   file_upload: string = '';
   case_number: string = '';
@@ -38,64 +37,37 @@ export class OldCaseMasterComponent implements OnInit {
   a_p_name: string = '';
   a_r_name: string = '';
   b_code: string = '';
-  showDocGrid:boolean = false;
-  id: number = 0;
-  showAddSuccess: boolean = false;
-  showUpdateSuccess: boolean = false;
   notifier = new Subject();
+  showUpdateSuccess: boolean = false;
+  showDocGrid: boolean = false;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
+
   ngOnInit(): void {
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      processing: true,
-    }
-    bindStepper();
     this.http.document_type().pipe(takeUntil(this.notifier)).subscribe(data => {
       this.doc_type = data.results
     })
-    this.getOldCases();
-  }
-  onShowEntryForm(){
-    this.showForm = true;
-  }
-  onShowForm(id:string){
-    this.showForm = true;
-    this.id = 1;
-    this.http.get_old_case(id).pipe(takeUntil(this.notifier)).subscribe(data => {
-      console.log(data);
-      this.petitioner_counsels = data.petitioner_counsel.split('|');
-      this.respondent_counsels = data.respondent_counsel.split('|');
-      this.additional_petitioner = data.additional_petitioner.split('|');
-      this.additional_respondent = data.additional_respondent.split('|');
-      this.judges = data.judge_name.split('|');
-      this.case_number = data.case_no;
-      this.registration_date = data.registration_date;
-      this.disposal_date = data.disposal_date;
-      this.f_p_name = data.first_petitioner;
-      this.f_r_name = data.first_respondent;
-      this.b_code = data.disposal_bench_code;
-      this.case_district = data.district;
-      this.documents = data.related_documents;
-      this.app_id = data.id;
-      if(this.documents.length !== 0){
-        this.showDocGrid = true;
-      }
-      if(data.additional_petitioner !== ''){
-        this.additional_petitioner = data.additional_petitioner.split('|');
-      }
-      if(data.additional_respondent !== ''){
-        this.additional_respondent = data.additional_respondent.split('|');
-      }
-    })
-  }
-  onHideForm(){
-    this.showForm = false;
-    this.id = 0;
-    this.showAddSuccess = false;
-    this.showUpdateSuccess = false;
-    this.getOldCases();
-    document.getElementById('save')?.removeAttribute('disabled');
+    bindStepper();
+    this.case_number = this.oldCases.case_no;
+    this.registration_date = this.oldCases.registration_date;
+    this.disposal_date = this.oldCases.disposal_date;
+    this.f_p_name = this.oldCases.petitioner_name;
+    this.f_r_name = this.oldCases.respondent_name;
+    this.case_district = this.oldCases.district;
+    this.petitioner_counsels = this.oldCases.petitioner_counsels.split('|');
+    this.respondent_counsels = this.oldCases.respondent_counsels.split('|');
+    this.b_code = this.oldCases.bench_code;
+    this.judges = this.oldCases.judges.split('|');
+    this.documents = this.caseDocuments;
+    this.app_id = this.oldCases.id;
+    if(this.oldCases.additional_petitioners){
+      this.additional_petitioner = this.oldCases.additional_petitioners.split('|');
+    } 
+    if(this.oldCases.additional_respondents){
+      this.additional_respondent = this.oldCases.additional_respondents.split('|');
+    }
+    if(this.documents.length !== 0){
+      this.showDocGrid = true;
+    }
   }
   onDeleteDocument(id:string){
     this.http.delete_document(id).pipe(takeUntil(this.notifier)).subscribe(data => {
@@ -191,7 +163,6 @@ export class OldCaseMasterComponent implements OnInit {
         alert('Please add atleast one judge');
       }
       else{
-        let case_id: any = this.app_id
         var petitioner_counsel = this.petitioner_counsels.toString().replace(/,/g,'|');
         var respondent_counsel = this.respondent_counsels.toString().replace(/,/g,'|');
         var additional_respondent = this.additional_respondent.toString().replace(/,/g,'|');
@@ -211,20 +182,10 @@ export class OldCaseMasterComponent implements OnInit {
         fd.append('additional_petitioner', additional_petitioner);
         fd.append('additional_respondent', additional_respondent);
         fd.append('judge_name', this.judges.toString().replace(',','|'));
-        if(this.id === 0){
-          this.http.case_entry(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
-            this.app_id = data.id
-            document.getElementById('save')?.setAttribute('disabled','');
-            this.showAddSuccess = true;
-          })
-        }
-        else{
-          console.log(additional_petitioner);
-          this.http.update_case(fd, case_id).pipe(takeUntil(this.notifier)).subscribe(data => {
-            this.showUpdateSuccess = true;
-            document.getElementById('save')?.setAttribute('disabled','');
-          });
-        }
+        this.http.update_case(fd, this.app_id).pipe(takeUntil(this.notifier)).subscribe(data => {
+          this.showUpdateSuccess = true;
+          document.getElementById('save')?.setAttribute('disabled','');
+        });
       }
     }
   }
@@ -259,19 +220,10 @@ export class OldCaseMasterComponent implements OnInit {
       }
     });
   }
-  getOldCases(){
-    this.http.get_old_cases().pipe(takeUntil(this.notifier)).subscribe(data => {
-      if(data.count === 0){
-        this.showData = false;
-      }
-      else{
-        this.showData = true;
-        this.old_cases = data.results;
-      }
+  onHideForm(){
+    this.onHide.emit({
+      status: true,
     })
-  }
-  onHideAlerts(){
-    this.showAddSuccess = false;
     this.showUpdateSuccess = false;
   }
 }

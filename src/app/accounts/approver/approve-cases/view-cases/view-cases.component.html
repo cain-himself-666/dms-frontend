@@ -1,0 +1,25 @@
+<div class="grid-view mt-5 px-5">
+    <div class="mt-4 text-center" *ngIf="!showData">
+        <h4>No Cases Found !!</h4>
+    </div>
+    <div class="mt-4" *ngIf="showData">
+        <table class="table table-bordered table-responsive mt-4" datatable [dtOptions]="dtOptions">
+            <thead>
+                <tr>
+                    <th class="col">S.No.</th>
+                    <th class="col">Case No</th>
+                    <th class="col">Parties</th>
+                    <th class="col">Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let o of old_cases; let i=index">
+                    <td class="text-center" width="5%">{{i+1}}</td>
+                    <td>{{o.case_no}}</td>
+                    <td>{{o.first_petitioner}} v/s {{o.first_respondent}}</td>
+                    <td class="text-center" width="10%"><a class="button" (click)="onShowEdit(o.id)">View</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

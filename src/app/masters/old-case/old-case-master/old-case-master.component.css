@@ -3,11 +3,15 @@
     cursor: pointer;
     text-decoration: none;
 }
-.btn{
+.btn-primary{
     background-color: #579FDD;
     border-color: #579FDD;
 }
-.btn:hover{
+.btn-primary:hover{
+    background-color: #7CB8EC;
+    border-color: #7CB8EC;
+}
+.btn-primary:disabled{
     background-color: #7CB8EC;
     border-color: #7CB8EC;
 }

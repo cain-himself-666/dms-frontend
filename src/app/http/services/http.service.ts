@@ -114,6 +114,9 @@ export class HttpService {
   update_old_case(fd:any){
     return this.http.put(`${URL}/api/old_case_master/${fd.get('id')}`,fd);
   }
+  get_new_cases(){
+    return this.http.get<any>(`${URL}/api/new_case_master`);
+  }
   update_user_isDelete(fd:any){
     return this.http.patch(`${URL}/api/user/profile/${fd.get('id')}`,fd);
   }
@@ -137,5 +140,8 @@ export class HttpService {
   }
   get_case_result(){
     return this.http.get<any>(`${URL}/api/cis/case_type`);
+  }
+  get_case_details(fd:any){
+    return this.http.get<any>(`${URL}/api/cis/civil_t`, { params: { case_type: fd.get('case_type'), case_no: fd.get('case_number'), case_year: fd.get('case_year')}});
   }
 }

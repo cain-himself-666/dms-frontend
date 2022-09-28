@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OldCaseMasterComponent } from './old-case-master.component';
+import { ViewCasesComponent } from './view-cases.component';
 
-describe('OldCaseMasterComponent', () => {
-  let component: OldCaseMasterComponent;
-  let fixture: ComponentFixture<OldCaseMasterComponent>;
+describe('ViewCasesComponent', () => {
+  let component: ViewCasesComponent;
+  let fixture: ComponentFixture<ViewCasesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OldCaseMasterComponent ]
+      declarations: [ ViewCasesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OldCaseMasterComponent);
+    fixture = TestBed.createComponent(ViewCasesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

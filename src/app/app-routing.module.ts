@@ -10,19 +10,19 @@ import { ComplexMasterComponent } from './masters/complex/complex-master/complex
 import { DepartmentMasterComponent } from './masters/department/department-master/department-master.component';
 import { DesignationMasterComponent } from './masters/designation/designation-master/designation-master.component';
 import { DesignationAllocationComponent } from './accounts/designation-allocation/designation-allocation.component';
-import { OldCaseMasterComponent } from './masters/old-case-master/old-case-master.component';
+import { OldCaseMasterComponent } from './masters/old-case/old-case-master/old-case-master.component';
 import { DutyAllocationComponent } from './accounts/duty-allocation/duty-allocation.component';
 import { ProfileComponent } from './public/profile/profile.component';
-import { ApproveCasesComponent } from './accounts/approve-cases/approve-cases.component';
+import { ApproveCasesComponent } from './accounts/approver/approve-cases/approve-cases.component';
 import { SearchComponent } from './public/search/search.component';
 import { DocumentTypeMasterComponent } from './masters/document-type/document-type-master/document-type-master.component';
-import { NewCaseMasterComponent } from './masters/new-case-master/new-case-master.component';
+import { NewCaseMasterComponent } from './masters/new-case/new-case-master/new-case-master.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "login" },
   { path: "login", component: LoginComponent, canActivate: [AuthGuard]},
   { path: "dashboard", component: DashboardComponent, canActivate: [RedirectGuard]},
-  { path: "employee", component: EmployeeMasterComponent},
+  { path: "employee", component: EmployeeMasterComponent, canActivate: [RedirectGuard]},
   { path: "department", component: DepartmentMasterComponent, canActivate: [RedirectGuard]},
   { path: "designation", component: DesignationMasterComponent, canActivate: [RedirectGuard]},
   { path: "complex", component: ComplexMasterComponent, canActivate: [RedirectGuard]},

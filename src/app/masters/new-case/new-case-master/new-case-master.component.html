@@ -1,0 +1,12 @@
+<div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <div class="d-block w-100">
+        <app-header></app-header>
+        <div class="title mt-4 text-center">
+            <h2>New Case Master</h2>
+        </div>
+        <app-add-new-case *ngIf="showAddNewCase" (hide)="onHide($event)"></app-add-new-case>
+        <app-view-new-case *ngIf="showViewNewCase" (addNewCase)="onShowAddNewCase($event)"></app-view-new-case>
+        <app-edit-new-case *ngIf="showEditNewCase" (hide)="onHide($event)"></app-edit-new-case>
+    </div>
+</div>

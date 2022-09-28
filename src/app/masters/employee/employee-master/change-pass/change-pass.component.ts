@@ -12,6 +12,8 @@ export class ChangePassComponent implements OnInit {
   @Output() hidePass: any = new EventEmitter<{status: boolean}>();
   @Input() username: string = '';
   @Input() id: string = '';
+  @Input() email: string = '';
+  @Input() group: string = '';
   e_username:string = '';
   password1: string = '';
   password2: string = '';
@@ -39,6 +41,8 @@ export class ChangePassComponent implements OnInit {
       fd.append('id', this.user_id);
       fd.append('password', this.password1);
       fd.append('password2', this.password2);
+      fd.append('email', this.email);
+      fd.append('group', this.group);
       this.http.update_user(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
         this.showPassUpdate = true;
       },err => {

@@ -61,6 +61,8 @@ export class EditEmployeeComponent implements OnInit {
       status: true,
       username: this.e_username,
       id: this.id,
+      email: this.e_email,
+      group: this.e_role
     })
   }
   onCheckAddress(event:any){

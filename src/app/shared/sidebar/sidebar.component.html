@@ -55,6 +55,12 @@
                 <span class="links_name">Old Case</span>
             </a>
         </li>
+        <li [hidden]="group === 1 || group === 2 || group === 3">
+            <a href="/new-case">
+                <i class="bi bi-journal-plus"></i>
+                <span class="links_name">New Case</span>
+            </a>
+        </li>
         <li [hidden]="group === 1 || group === 2 || group === 4">
             <a href="/approve-cases">
                 <i class="bi bi-journal-plus"></i>

@@ -12,7 +12,7 @@ import { Employee } from './employee-model';
                 <app-view-employee *ngIf="showViewEmployee" (displayAddEmployee)="onShowAddEmployee($event)" (displayEditEmployee)="onShowEditEmployee($event)"></app-view-employee>
                 <app-edit-employee *ngIf="showEditEmployee" (hide)="onHide($event)" [employee]="emp" [id]="id" [profileId]="profile_id" (displayChangePass)="onShowChangePass($event)"></app-edit-employee>
                 <app-add-employee *ngIf="showAddEmployee" (hide)="onHide($event)"></app-add-employee>
-                <app-change-pass *ngIf="showChangePass" (hidePass)="onHidePass($event)" [username]="username" [id]="id"></app-change-pass>
+                <app-change-pass *ngIf="showChangePass" (hidePass)="onHidePass($event)" [username]="username" [id]="id" [email]="email" [group]="group"></app-change-pass>
             </div>
           </div>`,
   styleUrls: ['./employee-master.component.css'],
@@ -27,6 +27,8 @@ export class EmployeeMasterComponent{
   id: string = '';
   profile_id: string = '';
   username: string = '';
+  email: string = '';
+  group: string = '';
   onShowAddEmployee(data: { status: boolean }){
     this.showViewEmployee = !data.status;
     this.showAddEmployee = data.status;
@@ -42,13 +44,15 @@ export class EmployeeMasterComponent{
     this.id = data.id;
     this.profile_id = data.profile_id;
   }
-  onShowChangePass(data: { status: boolean, username: string, id: string }){
+  onShowChangePass(data: { status: boolean, username: string, id: string, email: string, group:string }){
     this.showViewEmployee = !data.status;
     this.showAddEmployee = !data.status;
     this.showEditEmployee = !data.status;
     this.showChangePass = data.status;
     this.username = data.username;
     this.id = data.id;
+    this.email = data.email,
+    this.group = data.group
   }
   onHide(data: { status: boolean }){
     this.showViewEmployee = data.status;
