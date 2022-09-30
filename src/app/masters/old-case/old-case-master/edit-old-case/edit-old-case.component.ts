@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 declare var bindStepper: any;  
 
 @Component({
@@ -40,6 +41,7 @@ export class EditOldCaseComponent implements OnInit {
   notifier = new Subject();
   showUpdateSuccess: boolean = false;
   showDocGrid: boolean = false;
+  progressValue: number = 0;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
@@ -201,11 +203,26 @@ export class EditOldCaseComponent implements OnInit {
       fd.append('case_id', this.app_id.toString());
       fd.append('type_id', doc_type);
       fd.append('document_url', this.doc);
-      this.http.add_document(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
-        this.showDocGrid = true;
-        this.getDocuments();
-        this.doc_type_field = '0';
-        this.file_upload = '';
+      this.http.add_document(fd).pipe(map(events => {
+        switch(events.type){
+          case HttpEventType.UploadProgress:
+            this.progressValue = Math.round(events.loaded/events.total! * 100);
+            break;
+          case HttpEventType.Response:
+            setTimeout(() => {
+              this.progressValue = 0;
+            },250)
+        }
+      })).subscribe(data => {
+        if(this.progressValue !==100){
+
+        }
+        else{
+          this.showDocGrid = true;
+          this.getDocuments();
+          this.doc_type_field = '0';
+          this.file_upload = '';
+        }
       })
     }
   }

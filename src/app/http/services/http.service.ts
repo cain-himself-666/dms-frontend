@@ -37,7 +37,7 @@ export class HttpService {
     return this.http.get<any>(`${URL}/api/document_type/${id}`);
   }
   add_document(fd:any){
-    return this.http.post(`${URL}/api/old_case_document`, fd);
+    return this.http.post(`${URL}/api/old_case_document`, fd, { reportProgress: true, observe: "events"});
   }
   get_documents(case_id: any){
     return this.http.get<any>(`${URL}/api/old_case_document`, { params: { case_id: case_id}});
