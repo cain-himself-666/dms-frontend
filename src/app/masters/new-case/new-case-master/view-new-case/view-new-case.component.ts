@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ViewNewCaseComponent implements OnInit {
   @Output('addNewCase') addNew: any = new EventEmitter<{status: boolean}>();
+  @Output('editNewCase') editNew: any = new EventEmitter<{status: boolean}>();
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
   showData: boolean = false;
@@ -39,5 +40,11 @@ export class ViewNewCaseComponent implements OnInit {
     this.addNew.emit({
       status: true
     })
+  }
+  onGetCaseDetails(id:string){
+    this.editNew.emit({
+      status: true,
+      id: id,
+    });
   }
 }

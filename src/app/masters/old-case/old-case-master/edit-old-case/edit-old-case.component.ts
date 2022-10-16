@@ -214,9 +214,7 @@ export class EditOldCaseComponent implements OnInit {
             },250)
         }
       })).subscribe(data => {
-        if(this.progressValue !==100){
-
-        }
+        if(this.progressValue !==100){}
         else{
           this.showDocGrid = true;
           this.getDocuments();

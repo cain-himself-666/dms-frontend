@@ -144,4 +144,28 @@ export class HttpService {
   get_case_details(fd:any){
     return this.http.get<any>(`${URL}/api/cis/civil_t`, { params: { case_type: fd.get('case_type'), case_no: fd.get('case_number'), case_year: fd.get('case_year')}});
   }
+  get_extra_parties(cino: string){
+    return this.http.get<any>(`${URL}/api/cis/extra_party`, { params: { cino: cino}});
+  }
+  get_extra_advocates(cino: string){
+    return this.http.get<any>(`${URL}/api/cis/extra_advocate`, { params: { cino: cino}});
+  }
+  get_judges(b_code: string){
+    return this.http.get<any>(`${URL}/api/cis/judges`, { params: { judge_code: b_code}});
+  }
+  add_new_case(fd:any){
+    return this.http.post<any>(`${URL}/api/new_case_master`, fd);
+  }
+  add_new_case_document(fd:any){
+    return this.http.post(`${URL}/api/new_case_document`, fd, { reportProgress: true, observe: "events"});
+  }
+  get_new_case_documents(id:number){
+    return this.http.get<any>(`${URL}/api/new_case_document`, { params: { case_id: id } });
+  }
+  delete_new_case_document(id:string){
+    return this.http.delete(`${URL}/api/new_case_document/${id}`);
+  }
+  get_new_case_details(id:string){
+    return this.http.get<any>(`${URL}/api/new_case_master/${id}`);
+  }
 }

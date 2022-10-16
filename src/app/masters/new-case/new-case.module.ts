@@ -20,7 +20,7 @@ import { NewCaseMasterComponent } from './new-case-master/new-case-master.compon
     CommonModule,
     SharedModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class NewCaseModule { }

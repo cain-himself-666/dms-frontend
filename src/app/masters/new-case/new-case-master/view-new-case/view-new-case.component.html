@@ -1,6 +1,6 @@
 <div class="grid-view">
     <div class="text-end mt-3 px-5">
-        <button class="btn btn-primary" type="button" (click)="onAddNewCase()">+ Add Old Case</button>
+        <button class="btn btn-primary" type="button" (click)="onAddNewCase()">+ Add New Case</button>
     </div>
     <div class="mt-3 text-center" *ngIf="!showData">
         <h3>No new cases added</h3>
@@ -20,7 +20,7 @@
                     <td width="5%" class="text-center">{{i+1}}</td>
                     <td>{{o.case_no}}</td>
                     <td>{{o.first_petitioner}} v/s {{o.first_respondent}}</td>
-                    <td width="8%" class="text-center"><a class="button">Edit</a></td>
+                    <td width="8%" class="text-center"><a class="button" (click)="onGetCaseDetails(o.id)">Edit</a></td>
                 </tr>
             </tbody>
         </table>

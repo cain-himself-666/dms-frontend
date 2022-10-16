@@ -6,7 +6,7 @@
             <h2>New Case Master</h2>
         </div>
         <app-add-new-case *ngIf="showAddNewCase" (hide)="onHide($event)"></app-add-new-case>
-        <app-view-new-case *ngIf="showViewNewCase" (addNewCase)="onShowAddNewCase($event)"></app-view-new-case>
-        <app-edit-new-case *ngIf="showEditNewCase" (hide)="onHide($event)"></app-edit-new-case>
+        <app-view-new-case *ngIf="showViewNewCase" (editNewCase)="onShowEditNewCase($event)" (addNewCase)="onShowAddNewCase($event)"></app-view-new-case>
+        <app-edit-new-case *ngIf="showEditNewCase" [id]="case_id" (hide)="onHide($event)"></app-edit-new-case>
     </div>
 </div>

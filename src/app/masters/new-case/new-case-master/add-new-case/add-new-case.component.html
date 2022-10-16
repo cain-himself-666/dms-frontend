@@ -61,13 +61,13 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-4">
-                                <label class="form-label"><b>District</b></label>
+                                <label class="form-label"><b>Bench Code</b></label>
                             </div>
                             <div class="col-md-1">
                                 <label class="form-label"><b>:</b></label>
                             </div>
                             <div class="col-md-7">
-                                <span>{{district}}</span>
+                                <span>{{b_code}}</span>
                             </div>
                         </div>
                     </div>
@@ -85,13 +85,13 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-4">
-                                <label class="form-label"><b>Bench Code</b></label>
+                                <label class="form-label"><b>Judge(s)</b></label>
                             </div>
                             <div class="col-md-1">
                                 <label class="form-label"><b>:</b></label>
                             </div>
                             <div class="col-md-7">
-                                <span>{{b_code}}</span>
+                                <span>{{judges}}</span>
                             </div>
                         </div>
                     </div>
@@ -105,17 +105,6 @@
                             </div>
                             <div class="col-md-7">
                                 <span>{{judge_date}}</span>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-md-4">
-                                <label class="form-label"><b>Judge(s)</b></label>
-                            </div>
-                            <div class="col-md-1">
-                                <label class="form-label"><b>:</b></label>
-                            </div>
-                            <div class="col-md-7">
-                                <span>{{judges}}</span>
                             </div>
                         </div>
                     </div>
@@ -200,10 +189,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="alert alert-success mt-4" *ngIf="showSuccess">
+                    Data Saved Successfully !!!!
+                </div>
+                <div class="alert alert-success mt-4" *ngIf="showError">
+                    Data Saved Successfully !!!!
+                </div>
                 <div class="text-end mt-4 mb-5">
                     <button class="btn btn-primary mx-2" type="button" (click)="onHideForm()">Go Back</button>
-                    <button class="btn btn-primary mx-3">Save</button>
-                    <button class="btn btn-primary" type="button">Next</button>
+                    <button class="btn btn-primary mx-3" (click)="onAddStep1()">Save</button>
+                    <button class="btn btn-primary nextBtn" type="button">Next</button>
                 </div>
             </div>
         </div>
@@ -222,6 +217,15 @@
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-primary click" style="margin-top: 31px;" type="button" (click)="onAddStep2(docType.value)">Upload</button>
+                </div>
+            </div>
+            <div *ngIf="progressValue">
+                <div class="progress mt-4">
+                    <div class="progress-bar" [style.width.%]="progressValue" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{progressValue}}%</div>
+                </div>
+                <div class="mt-2">
+                    <span *ngIf="progressValue !== 100">Please wait while the file is being uploaded</span>
+                    <span *ngIf="progressValue === 100">File Uploaded</span>
                 </div>
             </div>
             <div class="mt-4">

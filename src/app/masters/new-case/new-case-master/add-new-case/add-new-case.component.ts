@@ -1,8 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HttpService } from 'src/app/http/services/http.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 declare var bindStepper: any;
 @Component({
   selector: 'app-add-new-case',
@@ -12,6 +13,11 @@ declare var bindStepper: any;
 export class AddNewCaseComponent implements OnInit {
   @Output('hide') onHide: any = new EventEmitter<{status: boolean}>();
   notifier = new Subject();
+  showSuccess: boolean = false;
+  pet: any = [];
+  res: any = [];
+  a_pet: any = [];
+  a_res:any = [];
   years: any = [];
   case_types:any = [];
   showDetails: boolean = false;
@@ -39,6 +45,8 @@ export class AddNewCaseComponent implements OnInit {
   p_counsels: string = '';
   r_counsels: string = '';
   remarks: string = '';
+  buffer: Array<string> = [];
+  progressValue: number = 0;
   constructor(private http: HttpService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
@@ -61,11 +69,13 @@ export class AddNewCaseComponent implements OnInit {
     })
   }
   onDeleteDocument(id:string){
-    this.http.delete_document(id).pipe(takeUntil(this.notifier)).subscribe(data => {
+    this.http.delete_new_case_document(id).pipe(takeUntil(this.notifier)).subscribe(data => {
       this.getDocuments();
     });
   }
   onGetCaseDetails(data:any){
+    this.case_no = '';this.a_p_name = ''; this.reg_date='';this.judge_date = '';this.f_p_name='';this.f_r_name='';this.b_code='';
+    this.judges='';this.a_p_name='';this.a_r_name='';this.p_counsels='';this.r_counsels='';
     let fd = new FormData();
     fd.append('case_number', data.value.case_number);
     fd.append('case_type', data.value.case_type);
@@ -76,23 +86,51 @@ export class AddNewCaseComponent implements OnInit {
         this.showDetails = false;
       }
       else{
+        this.onGetDocTypes();
         this.case_no = data.results[0].related_case_type.type_name+'/'+fd.get('case_number')+'/'+fd.get('case_year');
-        this.reg_date = this.datePipe.transform(data.results[0].date_of_filing, 'dd-MM-YYYY');
-        this.judge_date = this.datePipe.transform(data.results[0].date_of_decision, 'dd-MM-YYYY');
+        this.reg_date = this.datePipe.transform(data.results[0].date_of_filing, 'YYYY-MM-dd');
+        this.judge_date = this.datePipe.transform(data.results[0].date_of_decision, 'YYYY-MM-dd');
         this.f_p_name = data.results[0].pet_name;
         this.f_r_name = data.results[0].res_name;
-        this.p_counsels = data.results[0].pet_adv;
-        this.r_counsels = data.results[0].res_adv;
         this.b_code = data.results[0].judge_code;
-        console.log(data);
-        this.onGetDocTypes();
         this.showDetails = true;
         this.showError = false;
+        this.http.get_judges(data.results[0].judge_code).pipe(takeUntil(this.notifier)).subscribe(data => {
+          data.results.forEach((judges:any) => {
+            this.buffer.push(judges.judge_name);
+          })
+          this.judges = this.buffer.toString();
+        })
+        this.http.get_extra_advocates(data.results[0].cino).pipe(takeUntil(this.notifier)).subscribe(data => {
+          data.results.forEach((counsels:any) => {
+            if(counsels.type === 2){
+              this.res.push(counsels.adv_name);
+            }
+            else{
+              this.pet.push(counsels.adv_name);
+            }
+          })
+          this.p_counsels = this.pet.toString();
+          this.r_counsels = this.res.toString();
+        })
+        this.http.get_extra_parties(data.results[0].cino).pipe(takeUntil(this.notifier)).subscribe(data => {
+          data.results.forEach((addn:any) => {
+            if(addn.type === 2){
+              this.a_res.push(addn.name);
+            }
+            else{
+              this.a_pet.push(addn.name);
+            }
+          })
+          this.a_p_name = this.a_pet.toString();
+          this.a_r_name = this.a_res.toString();
+        })
       }
     })
+    
   }
   getDocuments(){
-    this.http.get_documents(this.app_id).pipe(takeUntil(this.notifier)).subscribe(data => {
+    this.http.get_new_case_documents(this.app_id).pipe(takeUntil(this.notifier)).subscribe(data => {
       if(data.count === 0){
         this.showDocGrid = false;
       }
@@ -101,6 +139,31 @@ export class AddNewCaseComponent implements OnInit {
         this.showDocGrid = true;
       }
     });
+  }
+  onAddStep1(){
+    let init_year: any = this.reg_date.split('-')[0];
+    let fd = new FormData();
+    fd.append('case_no', this.case_no);
+    fd.append('disposal_bench_code', this.b_code);
+    fd.append('case_year', init_year);
+    fd.append('judge_name', this.judges)
+    fd.append('disposal_date', this.judge_date);
+    fd.append('first_petitioner', this.f_p_name);
+    fd.append('first_respondent', this.f_r_name);
+    fd.append('registration_date', this.reg_date);
+    fd.append('petitioner_counsel', this.p_counsels);
+    fd.append('respondent_counsel', this.r_counsels);
+    fd.append('additional_petitioner', this.a_p_name);
+    fd.append('additional_respondent', this.a_r_name);
+    this.http.add_new_case(fd).subscribe(data => {
+      this.app_id = data.id;
+      this.showSuccess = true;
+      this.showError = false;
+    },err => {
+      this.showError = true;
+      this.showSuccess = false;
+    })
+
   }
   onAddStep2(doc_type:string){
     if(doc_type === '0'){
@@ -114,11 +177,24 @@ export class AddNewCaseComponent implements OnInit {
       fd.append('case_id', this.app_id.toString());
       fd.append('type_id', doc_type);
       fd.append('document_url', this.doc);
-      this.http.add_document(fd).pipe(takeUntil(this.notifier)).subscribe(data => {
-        this.showDocGrid = true;
-        this.getDocuments();
-        this.doc_type_field = '0';
-        this.file_upload = '';
+      this.http.add_new_case_document(fd).pipe(map(events => {
+        switch(events.type){
+          case HttpEventType.UploadProgress:
+            this.progressValue = Math.round(events.loaded/events.total! * 100);
+            break;
+          case HttpEventType.Response:
+            setTimeout(() => {
+              this.progressValue = 0;
+            },250)
+        }
+      })).subscribe(data => {
+        if(this.progressValue !== 100){}
+        else{
+          this.showDocGrid = true;
+          this.getDocuments();
+          this.doc_type_field = '0';
+          this.file_upload = '';
+        }
       })
     }
   }
