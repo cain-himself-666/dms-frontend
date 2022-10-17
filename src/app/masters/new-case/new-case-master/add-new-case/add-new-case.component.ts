@@ -22,6 +22,7 @@ export class AddNewCaseComponent implements OnInit {
   case_types:any = [];
   showDetails: boolean = false;
   showError: boolean = false;
+  showErr:boolean = false;
   caseType: string = '0';
   caseYear: string = '2015';
   doc: any;
@@ -158,9 +159,9 @@ export class AddNewCaseComponent implements OnInit {
     this.http.add_new_case(fd).subscribe(data => {
       this.app_id = data.id;
       this.showSuccess = true;
-      this.showError = false;
+      this.showErr = false;
     },err => {
-      this.showError = true;
+      this.showErr = true;
       this.showSuccess = false;
     })
 
